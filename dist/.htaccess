@@ -1,0 +1,2 @@
+FallbackResource http://kz.allymap.info/index.html
+ErrorDocument 404 http://kz.allymap.info/

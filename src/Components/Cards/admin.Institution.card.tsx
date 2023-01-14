@@ -1,0 +1,379 @@
+import { useState, useEffect } from 'react'
+import { styled } from '@mui/material/styles'
+import React from 'react'
+import PropTypes from 'prop-types'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import CardHeader from '@mui/material/CardHeader'
+import CardMedia from '@mui/material/CardMedia'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import { axiosAuth as axios, notification } from '../../Utils'
+import { API } from '../../../config/config'
+import IconButton from '@mui/material/IconButton'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Collapse from '@mui/material/Collapse'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import Divider from '@mui/material/Divider'
+import ListItemText from '@mui/material/ListItemText'
+import { red, yellow, green, grey } from '@mui/material/colors'
+import Box from '@mui/material/Box'
+import DialogTitle from '@mui/material/DialogTitle'
+import Dialog from '@mui/material/Dialog'
+
+const ExpandMore = styled((props: { expand: boolean; children?: React.ReactNode; onClick?: () => void }) => {
+	const { expand, ...other } = props
+	return <IconButton {...other} />
+})(({ theme, expand }: { theme: any, expand: boolean }) => ({
+	transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+	marginLeft: 'auto',
+	transition: theme.transitions.create('transform', {
+		duration: theme.transitions.duration.shortest,
+	}),
+}))
+
+export interface EditInstitutionDialogProps {
+	open: boolean
+	institutionID: string
+	institutionTitle: string
+}
+
+function EditInstitutionDialog(props: EditInstitutionDialogProps) {
+	// Setups
+	const { open, institutionID, institutionTitle } = props
+	// States
+	const [title, setTitle] = useState('')
+	const [description, setDescription] = useState('')
+	const [address, setAddress] = useState('')
+	const [link, setLink] = useState('')
+	const [imagePath, setImagePath] = useState('')
+	const [disableSaveButton, setDisableSaveButton] = useState(true)
+
+	// Functions
+	function getInstitutionData() {
+		axios.post(`${API.baseURL}/institutions/find`, { query: { _id: institutionID } }).then((res) => {
+			if (!res.data.err) {
+				setTitle(res.data[0].title)
+				setDescription(res.data[0].description)
+				setAddress(res.data[0].address)
+				setLink(res.data[0].link)
+				setImagePath(res.data[0].imagePath)
+			} else {
+				notification.custom.error(res.data.err)
+			}
+		})
+	}
+
+	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault()
+		const data = new FormData(event.currentTarget)
+		axios.post(`${API.baseURL}/institutions/edit`, {
+			query: {
+				_id: institutionID
+			},
+			updated: {
+				title: data.get('title'),
+				description: data.get('description'),
+				address: data.get('address'),
+				link: data.get('link'),
+				imagePath: data.get('imagePath'),
+			}
+		})
+			.then((res) => {
+				if (!res.data.err) {
+					window.location.reload(false)
+				} else {
+					notification.custom.error(res.data.err)
+				}
+			})
+	}
+
+	function loadInputs() {
+		document.getElementById('title').value = title
+		document.getElementById('description').value = description
+		document.getElementById('address').value = address
+		document.getElementById('link').value = link
+		document.getElementById('imagePath').value = imagePath
+		setDisableSaveButton(false)
+	}
+
+	useEffect(() => {
+		getInstitutionData()
+	}, [])
+
+	return (
+		<Dialog open={open}>
+			<DialogTitle>Реадактировать заведение {institutionTitle}</DialogTitle>
+			<>
+				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ margin: 1}}>
+					<TextField InputLabelProps={{ shrink: true }}
+						margin="normal"
+						required
+						fullWidth
+						id="title"
+						label="Название заведения"
+						name="title"
+						autoFocus
+					/>
+					<TextField InputLabelProps={{ shrink: true }}
+						margin="normal"
+						required
+						fullWidth
+						name="description"
+						label="Описание"
+						id="description"
+					/> 
+					<TextField InputLabelProps={{ shrink: true }}
+						margin="normal"
+						required
+						fullWidth
+						name="address"
+						label="Адрес"
+						id="address"
+					/>
+					<TextField InputLabelProps={{ shrink: true }}
+						margin="normal"
+						required
+						fullWidth
+						name="link"
+						label="Ссылка"
+						id="link"
+					/>
+					<TextField InputLabelProps={{ shrink: true }}
+						margin="normal"
+						required
+						fullWidth
+						name="imagePath"
+						label="Путь к картинке"
+						id="imagePath"
+					/>
+					<div style={{ display: 'flex', flexDirection: 'row' }}>
+						<Button type="submit" color="success" fullWidth variant="contained" sx={{ mt: 2, mb: 2, mr: 1 }} disabled={disableSaveButton}>
+							Сохранить
+						</Button>
+						<Button type="button" fullWidth variant="contained" onClick={() => { loadInputs() }} sx={{ mt: 2, mb: 2, ml: 1 }} >
+							Загрузить текущие настройки...
+						</Button>
+					</div>
+				</Box>
+			</>
+		</Dialog>
+	)
+}
+
+type PropsUserComments = {
+	userID: string,
+	rate: string,
+	comment: string
+}
+
+function UserComments({ userID, rate, comment }: PropsUserComments) {
+	// States
+	const [user, setUser] = useState('')
+
+	// Functions
+	function getUser() {
+		let query = { query: { _id: userID } }
+		axios.post(`${API.baseURL}/users/find`, query).then((response) => { if (!response.data.err) { setUser(response.data.login) } else { notification.custom.error(res.data.err) } })
+	}
+
+	useEffect(() => {
+		getUser()
+	}, [])
+	return (
+		<>
+			<ListItem alignItems="flex-start">
+				<ListItemText
+					primary={user + ` - ${rate}`}
+					secondary={
+						<React.Fragment>
+							{comment}
+						</React.Fragment>
+					}
+				/>
+			</ListItem>
+			<Divider />
+		</>
+	)
+}
+
+type PropsComments = {
+	comments: any,
+	expanded: boolean,
+	id: string
+}
+
+type PropsComment = {
+	rate: string,
+	userID: string,
+	institutionID: string,
+	content: string
+}
+
+function Comments({ comments, expanded, id }: PropsComments) {
+	return (
+		<Collapse in={expanded} timeout="auto" unmountOnExit>
+			<CardContent>
+				<Typography paragraph>Comments:</Typography>
+				<List sx={{ width: '100%', maxWidth: '500px' }}>
+					{comments.map(({ rate, userID, institutionID, content }: PropsComment, index: number) => (
+						institutionID == id && <UserComments key={index} userID={userID} rate={rate} comment={content} />
+					))}
+				</List>
+			</CardContent>
+		</Collapse>
+	)
+}
+
+type PropsInstitutionCard = {
+	userID: string,
+	id: string,
+	name: string,
+	address: string,
+	status: string,
+	description: string,
+	link: string,
+	imagePath: string,
+	isAdmin: boolean
+}
+
+export default function AdminInstitutionCard({ userID, id, name, address, description, link, imagePath }: PropsInstitutionCard) {
+	// Setups
+	const unformattedURL = `${API.baseURL}\\` + `${imagePath}`
+	let formattedImageURL = unformattedURL.replace(/\\/g, "/")
+	if (userID == null) {
+		localStorage.removeItem('token')
+		location.reload()
+	}
+
+	// States
+	const [showRate, setShowRate] = useState('')
+	const [showRateColor, setShowRateColor] = useState('')
+	const [comments, setComments] = useState([])
+	const [expanded, setExpanded] = useState(false)
+	const [openEditDialog, setOpenEditDialog] = useState(false)
+
+	// Handlers
+	const handleExpandClick = () => {
+		setExpanded(!expanded)
+	}
+
+	// Functions
+	function RemoveInstitutionCard() {
+		axios.post(`${API.baseURL}/institutions/remove`, { query: { _id: id } }).then((response) => {
+			if (!response.data.err) {
+				window.location.reload(false)
+			} else {
+				notification.custom.error(response.data.err)
+			}
+		})
+	}
+
+	function EditInstitutionCard() {
+		setOpenEditDialog(true)
+	}
+
+	function handleEditDialogClose() {
+		setOpenEditDialog(false)
+	}
+
+	function getComments() {
+		axios.post(`${API.baseURL}/comments/get`, {
+			query: {
+				institutionID: id
+			}
+		}).then((response) => {
+			if (!response.data.err) {
+				let comments = response.data
+				setComments(comments)
+				let sumRate = 0
+				let n = 0
+				for (let i = 0; i < comments.length; i++) {
+					let rate = comments[i].rate
+					sumRate = sumRate + parseInt(rate)
+					n++
+				}
+				let average = (Math.ceil(sumRate / n * 10)) / 10
+				if (average > 0) {
+
+				} else {
+					average = 5
+				}
+
+				if (average >= 8) {
+					setShowRate(average.toString())
+					setShowRateColor(green[800])
+				} else if (average >= 6) {
+					setShowRate(average.toString())
+					setShowRateColor(green[400])
+				} else if (average >= 4) {
+					setShowRate(average.toString())
+					setShowRateColor(yellow[800])
+				} else if (average >= 2) {
+					setShowRate(average.toString())
+					setShowRateColor(red[300])
+				} else if (average >= 0) {
+					setShowRate(average.toString())
+					setShowRateColor(red[800])
+				} else {
+					setShowRate('X')
+					setShowRateColor(grey[50])
+				}
+			} else {
+				notification.custom.error(response.data.err)
+			}
+
+		})
+	}
+
+	useEffect(() => {
+		getComments()
+	}, [])
+
+	return (
+		<Card sx={{ width: '95vw', maxWidth: '500px', marginBottom: -1.1 }}>
+			<EditInstitutionDialog open={openEditDialog} onClose={handleEditDialogClose} institutionID={id} institutionTitle={name} />
+			<CardHeader title={name} subheader={`ID пользователя: ${userID}`} avatar={<Avatar sx={{ bgcolor: showRateColor }} aria-label="recipe"> {showRate} </Avatar>} />
+			{imagePath != undefined && imagePath != '' && <CardMedia component='img' height="240" image={formattedImageURL} />}
+			<CardContent>
+				<Typography variant='body2' color='text.secondary'>
+					Адрес: {address}
+				</Typography>
+				<Typography variant='body2' color='text.secondary'>
+					{description}
+				</Typography>
+			</CardContent>
+			<CardActions disableSpacing>
+
+				<Button size='small' onClick={() => { window.open(link, '_blank') }}>ССЫЛКА</Button>
+				<Button size='small' onClick={() => { RemoveInstitutionCard() }}>УДАЛИТЬ</Button>
+				<Button size='small' onClick={() => { EditInstitutionCard() }}>РЕАДАКТИРОВАТЬ</Button>
+				<ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
+					<ExpandMoreIcon />
+				</ExpandMore>
+			</CardActions>
+			<Comments expanded={expanded} comments={comments} id={id} />
+		</Card>
+	)
+}
+
+AdminInstitutionCard.propTypes = {
+	name: PropTypes.string.isRequired,
+	id: PropTypes.string.isRequired,
+	userID: PropTypes.string.isRequired,
+	address: PropTypes.any,
+	status: PropTypes.array.isRequired,
+	description: PropTypes.string.isRequired,
+	link: PropTypes.string.isRequired,
+	imagePath: PropTypes.string
+}
+
+Comments.propTypes = {
+	expanded: PropTypes.bool.isRequired,
+	comments: PropTypes.array.isRequired,
+	id: PropTypes.string.isRequired
+}
