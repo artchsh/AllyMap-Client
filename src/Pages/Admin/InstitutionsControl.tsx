@@ -112,7 +112,7 @@ export default function InstitutionsControl() {
 
 	return (
 		<AdminControlPanelLayout>
-			<div style={{ display: 'flex', flexDirection: 'column' }}>
+			<div className='flex flex-col absolute top-20'>
 				<div style={{ display: 'flex', justifyContent: 'center' }}>
 					<Search>
 						<SearchIconWrapper>

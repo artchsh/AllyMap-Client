@@ -223,7 +223,7 @@ export default function Request() {
 								sx={{ borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px', marginLeft: 1, border: 1 }}
 								className='flex justify-center items-center'
 								component='label'>
-								<ImageOutlinedIcon sx={{ marginRight: 0.3 }} /> {' Добавить изображение'}
+								<ImageOutlinedIcon sx={{ marginRight: 0.3 }} /><p className='text-xs w-min mr-1'>Добавить изображение </p>
 								<input
 									type="file"
 									accept='image/png, image/jpeg, image/jpg'

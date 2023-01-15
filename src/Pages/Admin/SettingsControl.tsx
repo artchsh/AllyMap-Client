@@ -68,7 +68,7 @@ export default function SettingsControl() {
 
     return (
         <AdminControlPanelLayout>
-            <Box component="form" noValidate onSubmit={handleSubmit}>
+            <Box component="form" noValidate onSubmit={handleSubmit} className='p-4'>
                 <TextField
                     InputLabelProps={{ shrink: true }}
                     margin="normal"
@@ -100,7 +100,14 @@ export default function SettingsControl() {
                     id="admins"
                 />
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Button type="submit" color="success" fullWidth variant="contained" sx={{ mt: 2, mb: 2, mr: 1 }} disabled={disableSaveButton}>
+                    <Button 
+                    type="submit" 
+                    color="success" 
+                    fullWidth 
+                    variant="contained" 
+                    size='small'
+                    sx={{ mt: 2, mb: 2 }}
+                    disabled={disableSaveButton}>
                         Сохранить
                     </Button>
                     <Button type="button" fullWidth variant="contained" onClick={() => { loadInputs() }} sx={{ mt: 2, mb: 2, ml: 1 }} >

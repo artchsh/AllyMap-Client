@@ -110,9 +110,6 @@ export default function Settings() {
                         <ListItemText primary={userRequestedInstututions} secondary='Количество заведений в рассмотрении' />
                     </ListItemButton>
                 </ListItem>
-
-
-
                 <ListItem disablePadding>
                     <ListItemButton onClick={() => { signout() }} sx={{ color: '#eb4034' }}>
                         <ListItemIcon>
@@ -139,7 +136,7 @@ export default function Settings() {
                             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
                                 <Link target="_blank">Senrik_miele</Link>
                                 <Typography variant='body2' color='text.secondary'>
-                                    Соавтор и тестер сайта
+                                    Помощник и тестер сайта
                                 </Typography>
                             </div>
                         </div>

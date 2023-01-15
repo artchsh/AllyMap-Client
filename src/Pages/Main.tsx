@@ -142,8 +142,8 @@ export default function Main() {
 
 			<div className='flex justify-center flex-wrap'>
 				{institutions.map((institution: InstitutionProps, index: number) => (
-					institution.city.includes(city) && (
-						institution.title.includes(filter) && (
+					institution?.city?.includes(city) && (
+						institution?.title.includes(filter) && (
 							<InstitutionCard
 								key={index}
 								imagePath={institution.imagePath}
@@ -168,7 +168,7 @@ export default function Main() {
 }
 
 type InstitutionProps = {
-	city: string
+	city?: string
 	_id: string,
 	title: string,
 	name: string,
@@ -177,5 +177,5 @@ type InstitutionProps = {
 	address: string,
 	id: string,
 	link: string,
-	imagePath: string
+	imagePath?: string
 }

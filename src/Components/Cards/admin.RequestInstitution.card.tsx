@@ -38,7 +38,7 @@ export default function AdminRequestInstitutionCard({ id, name, address, descrip
             }
         }).then((res) => {
             if(!res.data.err) {
-                window.location.reload(false)
+                window.location.reload()
             } else {
                 notification.custom.error(res.data.err)
             }
@@ -53,7 +53,7 @@ export default function AdminRequestInstitutionCard({ id, name, address, descrip
             }
         }).then((res) => {
             if (!res.data.err) {
-                window.location.reload(false)
+                window.location.reload()
             } else {
                 notification.custom.error(res.data.err)
             }
@@ -78,7 +78,6 @@ export default function AdminRequestInstitutionCard({ id, name, address, descrip
                 <CardActions>
                     <LoadingButton size='small' variant='contained' onClick={() => { window.open(link, '_blank') }}>ССЫЛКА</LoadingButton>
                     <>
-                        <LoadingButton color='info' size='small' variant='contained' loading={loading} onClick={() => { declineRequest() }}>Реадактировать</LoadingButton>
                         <LoadingButton color='success' size='small' variant='contained' loading={loading} onClick={() => { acceptRequest() }}>Принять</LoadingButton>
                         <LoadingButton color='error' size='small' variant='contained' loading={loading} onClick={() => { declineRequest() }}>Отклонить</LoadingButton>
                     </>

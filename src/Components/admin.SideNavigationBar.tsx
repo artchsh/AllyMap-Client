@@ -1,65 +1,64 @@
 import * as React from 'react'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Paper from '@mui/material/Paper'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { axiosAuth as axios, notification } from '../Utils'
-import { useAuthUser } from 'react-auth-kit'
-import { API } from '../../config/config'
-import styled from 'styled-components'
-import HomeIcon from '@mui/icons-material/Home'
+
 import PersonIcon from '@mui/icons-material/Person'
+import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined'
+import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
+import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined'
+import Home from '@mui/icons-material/Home'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
-import CommentIcon from '@mui/icons-material/Comment'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import SettingsIcon from '@mui/icons-material/Settings'
-import ProjectInfoItem from './items/ProjectInfoItem'
 
-const LeftSpacer = styled.div`
-    width: 1px;
-    height: 1px;
-    margin: 129px;
-`
+import { useNavigate } from 'react-router-dom'
+import { useAuthUser } from 'react-auth-kit'
+import { themeColor } from '../Utils/colors'
+import { axiosAuth as axios, notification } from '../Utils'
+import { API } from '../../config/config'
 
-export default function SideNavigationBar() {
+const pages: Array<Array<String>> = [
+    ['Comments', '/admin/comments'],
+    ['Users', '/admin/user-control'],
+    ['Institutions', '/admin/institution-control'],
+    ['Requests', '/admin/request-institution-control'],
+
+]
+
+const pages2: Array<Array<String>> = [
+    ['Main', '/admin'],
+    ['Settings', '/admin/settings'],
+    ['Home', '/']
+]
+
+const pagesPaths: Array<String> = [
+    '/admin/comments',
+    '/admin/user-control',
+    '/admin/institution-control',
+    '/admin/request-institution-control',
+
+]
+
+const pagesPaths2: Array<String> = [
+    '/admin',
+    '/admin/settings',
+    '/'
+]
+
+export default function NavigationBar() {
+    // States
+    const [currentPageIndex, setCurrentPageIndex] = React.useState<number>(0)
+    const [currentPageIndex2, setCurrentPageIndex2] = React.useState<number>(0)
+
     // Setups
     const navigate = useNavigate()
-    const user = useAuthUser()
+    const authStateUser = useAuthUser()
+    const user: { _id?: string } | null = authStateUser() || {}
 
     // Functions
-    function navigateAdminPanel(value: number) {
-        switch (value) {
-            case 0:
-                navigate('/admin')
-                break
-            case 1:
-                navigate('/admin/user-control')
-                break
-            case 2:
-                navigate('/admin/institution-control')
-                break
-            case 3:
-                navigate('/admin/request-institution-control')
-                break
-            case 4:
-                navigate('/admin/comments')
-                break
-            case 5:
-                navigate('/admin/settings')
-                break
-            case 6:
-                navigate('/')
-                break
-        }
-    }
-
     function fetchAdmins() {
         axios.get(`${API.baseURL}/config/`).then((response) => {
             if (!response.data.err) {
                 const ADMINS = response.data.admins
-                const isAdmin = ADMINS.includes(user()._id)
+                const isAdmin = ADMINS.includes(user._id)
                 if (!isAdmin) { navigate('/') }
             } else {
                 notification.custom.error(response.data.err)
@@ -67,59 +66,65 @@ export default function SideNavigationBar() {
         })
     }
 
-    useEffect(() => {
+    function activeStyle(index: number, currentPageIndex: number) {
+        // if (index == parseInt(page)) {
+        if (index == currentPageIndex) {
+            return { backgroundColor: themeColor[5], borderRadius: 16, paddingLeft: 12, paddingRight: 12 }
+        } else {
+            return {}
+        }
+    }
+
+    function activeStyle2(index: number, currentPageIndex: number) {
+        // if (index == parseInt(page)) {
+        if (index == currentPageIndex) {
+            return { backgroundColor: themeColor[5], borderRadius: 16, paddingLeft: 12, paddingRight: 12 }
+        } else {
+            return {}
+        }
+    }
+
+    React.useEffect(() => {
         fetchAdmins()
+        setCurrentPageIndex(pagesPaths.indexOf(location.pathname))
+        setCurrentPageIndex2(pagesPaths2.indexOf(location.pathname))
     }, [])
+
     return (
         <>
-            <LeftSpacer />
-            <Paper sx={{ height: '100vh', position: 'fixed', left: 0, top: 0 }} elevation={4} square>
-                <ProjectInfoItem />
-                <ListItemButton onClick={() => { navigateAdminPanel(0) }}>
-                    <ListItemIcon>
-                        <HomeIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Главная" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(1) }}>
-                    <ListItemIcon>
-                        <PersonIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Пользователи" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(2) }}>
-                    <ListItemIcon>
-                        <LocationCityIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Заведения" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(3) }}>
-                    <ListItemIcon>
-                        <LocationCityIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Запросы на заведения" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(4) }}>
-                    <ListItemIcon>
-                        <CommentIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Комментарии" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(5) }}>
-                    <ListItemIcon>
-                        <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Настройки" />
-                </ListItemButton>
-                <ListItemButton onClick={() => { navigateAdminPanel(6) }}>
-                    <ListItemIcon>
-                        <ArrowBackIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Назад" />
-                </ListItemButton>
-
-            </Paper>
+            <div className='fixed top-0 left-0 right-0 w-scree z-50' style={{ height: 76, backgroundColor: themeColor[3] }}>
+                <div className='flex flex-row items-center justify-around h-full'>
+                    {pages.map((page: string[], index: number) => (
+                        <button key={index} onClick={() => { navigate(page[1]) }}>
+                            <div className='flex flex-col justify-center items-center'>
+                                <div style={activeStyle(index, currentPageIndex)}>
+                                    {index == 0 && <CommentOutlinedIcon />}
+                                    {index == 1 && <PersonIcon />}
+                                    {index == 2 && <LocationCityIcon />}
+                                    {index == 3 && <LibraryAddCheckOutlinedIcon />}
+                                </div>
+                                <label>{page[0]}</label>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </div>
+            <div className='fixed bottom-0 left-0 right-0 w-scree z-50' style={{ height: 76, backgroundColor: themeColor[3] }}>
+                <div className='flex flex-row items-center justify-around h-full'>
+                    {pages2.map((page: string[], index: number) => (
+                        <button key={index} onClick={() => { navigate(page[1]) }}>
+                            <div className='flex flex-col justify-center items-center'>
+                                <div style={activeStyle2(index, currentPageIndex2)}>
+                                    {index == 0 && <Home />}
+                                    {index == 1 && <SettingsOutlinedIcon />}
+                                    {index == 2 && <ArrowBackOutlinedIcon />}
+                                </div>
+                                <label>{page[0]}</label>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </div>
         </>
     )
-
 }

@@ -1,20 +1,15 @@
 import * as React from 'react'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Password from '@mui/icons-material/Password'
-import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardActions from '@mui/material/CardActions'
-import CardContent from '@mui/material/CardContent'
-import Paper from '@mui/material/Paper'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 import axios from 'axios'
 import { notification } from '../../Utils'
 import { Toaster } from 'react-hot-toast'
 import { API } from '../../../config/config'
-import ProjectInfoItem from '../../Components/items/ProjectInfoItem'
+import { themeColor } from '../../Utils/colors'
 
 export default function Login() {
 	// Setups
@@ -76,26 +71,26 @@ export default function Login() {
 	return (
 		<>
 			<Toaster />
-			<Paper sx={{ position: 'absolute', top: 0, width: '100%' }} elevation={1} square>
-				<ProjectInfoItem />
-			</Paper>
 			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-				<Card>
-					<CardContent>
-						<Box sx={{ display: 'flex', alignItems: 'flex-end', marginTop: 0.5 }}>
-							<AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-							<TextField id="input-login" label="Логин" variant="standard" onChange={handleLoginChange} />
-						</Box>
-						<Box sx={{ display: 'flex', alignItems: 'flex-end', marginTop: 0.5 }}>
-							<Password sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-							<TextField id="input-password" label="Пароль" variant="standard" type="password" onChange={handlePasswordChange} />
-						</Box>
-					</CardContent>
-					<CardActions>
-						<Button id='loginbtn' onClick={userSignIn} size="small">Войти</Button>
-						<Button onClick={() => { navigate('/register') }} size="small">Регистрация</Button>
-					</CardActions>
-				</Card>
+				<div>
+					<div className='mb-2'>
+						<h1 className='text-2xl'>Вход</h1>
+						<p className='text-sm'>Или <Link className='' style={{ color: themeColor[7] }} to={'/register'}>создать новый аккаунт</Link></p>
+					</div>
+					<div className='flex flex-end items-center mb-2'>
+						<AccountCircle className='mr-2' />
+						<TextField label="Логин" variant="outlined" onChange={handleLoginChange} />
+					</div>
+					<div className='flex flex-end items-center mb-4'>
+						<Password className='mr-2' />
+						<TextField label="Пароль" variant="outlined" type="password" onChange={handlePasswordChange} />
+					</div>
+					<Button id='loginbtn'
+						sx={{ borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, width: '100%', border: 1 }}
+						onClick={userSignIn}>
+						Войти
+					</Button>
+				</div>
 			</div>
 		</>
 	)
