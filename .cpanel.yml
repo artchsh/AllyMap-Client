@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/allymapi/public_html/
+    - export DEPLOYPATH=/home/allymapi/kz.allymap.info/
     - /bin/cp -R dist/ $DEPLOYPATH
