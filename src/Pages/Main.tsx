@@ -56,7 +56,20 @@ const StyledInputBase = styledMUI(InputBase)(({ theme }) => ({
 	height: '100%'
 }))
 
-const cities = ['Алматы', 'Астана', 'Шымкент']
+const cities: string[] = ['Алматы', 'Астана', 'Шымкент']
+
+interface InstitutionProps {
+	city?: string
+	_id: string,
+	title: string,
+	name: string,
+	status: string,
+	description: string,
+	address: string,
+	id: string,
+	link: string,
+	imagePath?: string
+}
 
 export default function Main() {
 	// Setups
@@ -68,10 +81,10 @@ export default function Main() {
 	const authHeader = useAuthHeader()
 
 	// States
-	const [institutions, setInstitutions] = useState([])
-	const [filter, setFilter] = useState('')
-	const [ADMINS, setADMINS] = useState([])
-	const [city, setCity] = useState('')
+	const [institutions, setInstitutions] = useState<Array<InstitutionProps | {}>>([])
+	const [filter, setFilter] = useState<string>('')
+	const [ADMINS, setADMINS] = useState<string[]>([])
+	const [city, setCity] = useState<string>('')
 	const isAdmin = ADMINS.includes(user._id)
 
 	// Handlers
@@ -165,17 +178,4 @@ export default function Main() {
 			<div className='mt-20'></div>
 		</MainLayout>
 	)
-}
-
-type InstitutionProps = {
-	city?: string
-	_id: string,
-	title: string,
-	name: string,
-	status: string,
-	description: string,
-	address: string,
-	id: string,
-	link: string,
-	imagePath?: string
 }

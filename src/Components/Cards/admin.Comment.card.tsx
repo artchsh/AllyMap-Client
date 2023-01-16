@@ -20,9 +20,9 @@ type Props = {
 
 export default function AdminCommentCard({ commentID, userID, institutionID, text, rate }: Props) {
     // States
-    const [loading, setLoading] = useState(false)
-    const [user, setUser] = useState('')
-    
+    const [loading, setLoading] = useState<boolean>(false)
+    const [user, setUser] = useState<string>('')
+
     // Functions
     function remove() {
         axios.post(`${API.baseURL}/comments/remove`, { query: { _id: commentID } }).then((res) => {
@@ -36,7 +36,7 @@ export default function AdminCommentCard({ commentID, userID, institutionID, tex
     }
 
     function getUser() {
-        let query = { query: { _id: userID } }
+        const query: { query: { _id: string } } = { query: { _id: userID } }
         axios.post(`${API.baseURL}/users/find`, query)
             .then((response) => {
                 if (!response.data.err) {

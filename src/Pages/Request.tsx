@@ -32,7 +32,16 @@ const Spacer = styled.div`
   align-items: center;
 `
 
-const cities = [{ label: "Алматы" }, { label: "Астана" }, { label: "Шымкент" }]
+const cities: Array<{ label: string }> = [{ label: "Алматы" }, { label: "Астана" }, { label: "Шымкент" }]
+
+type InstitutionRequestProps = {
+	title: string
+	address: string
+	description: string
+	link: string
+	imagePath: string
+	city: string
+}
 
 export default function Request() {
 	// Setups
@@ -42,15 +51,15 @@ export default function Request() {
 	const user = authStateUser() || {}
 
 	// States
-	const [file, setFile] = useState(undefined)
-	const [title, setTitle] = useState('')
-	const [description, setDescription] = useState('')
-	const [link, setLink] = useState('')
-	const [address, setAddress] = useState('')
-	const [city, setCity] = useState('')
-	const [uploadingState, setUploadingState] = useState(false)
-	const [open, setOpen] = useState(false)
-	const [requests, setRequests] = useState([])
+	const [file, setFile] = useState<undefined | Blob>(undefined)
+	const [title, setTitle] = useState<string>('')
+	const [description, setDescription] = useState<string>('')
+	const [link, setLink] = useState<string>('')
+	const [address, setAddress] = useState<string>('')
+	const [city, setCity] = useState<string>('')
+	const [uploadingState, setUploadingState] = useState<boolean>(false)
+	const [open, setOpen] = useState<boolean>(false)
+	const [requests, setRequests] = useState<Array<InstitutionRequestProps>>([])
 
 	// Handlers
 	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +116,7 @@ export default function Request() {
 						notification.custom.error(response.data.err)
 					}
 				})
+			setUploadingState(false)
 		}
 	}
 
@@ -158,9 +168,12 @@ export default function Request() {
 					<div>
 						<p className='ml-1 pt-4 px-4'>Запрос на добавление заведения</p>
 						{checkImage() &&
-							<div className='pt-2 mt-2 mb-2' style={{ height: 360, objectFit: 'cover', overflow: 'hidden' }}>
-								<img src={checkImage()} />
-							</div>}
+							<div className='pt-2 mt-2 mb-2'>
+								<div className='flex justify-center '>
+									<img src={checkImage()} className='min-w-full' style={{ aspectRatio: '1/1', objectFit: 'cover', overflow: 'hidden' }} />
+								</div>
+							</div>
+						}
 						<Box sx={{ display: 'flex', flexDirection: 'column' }} className='mt-2 px-4'>
 							<TextField
 								InputLabelProps={{ shrink: true }}
@@ -236,7 +249,7 @@ export default function Request() {
 				</div>
 			</div>
 			<Wrapper style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginBottom: 100 }}>
-				{requests.map(({ title, address, description, link, imagePath, city }, index) => (
+				{requests.map(({ title, address, description, link, imagePath, city }: InstitutionRequestProps, index: number) => (
 					<Spacer key={index}>
 						<RequestInstitutionCard name={title} address={address} description={description} link={link} imagePath={imagePath} city={city} />
 					</Spacer>

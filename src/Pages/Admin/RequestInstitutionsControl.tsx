@@ -22,13 +22,23 @@ margin: 10px;
 width: fit-content;
 `
 
+interface Request {
+    _id: string
+    title: string
+    address: string
+    description: string
+    link: string
+    imagePath: string
+    userRequestID: string
+}
+
 export default function RequestInstitutionControl() {
     // Setups
     const isAuthenticated = useIsAuthenticated()
     const navigate = useNavigate()
 
     // States
-    const [requests, setRequests] = useState([])
+    const [requests, setRequests] = useState<Array<Request>>([])
 
     async function fetchRequests() {
         axios.post(`${API.baseURL}/institutions/request/find`, { query: {} })
@@ -48,11 +58,11 @@ export default function RequestInstitutionControl() {
             navigate('/login')
         }
     }, [])
-    
+
     return (
         <AdminControlPanelLayout>
             <Wrapper>
-                {requests.map(({ _id, title, address, description, link, imagePath, userRequestID }, index) => (
+                {requests.map(({ _id, title, address, description, link, imagePath, userRequestID }: Request, index) => (
                     <Spacer key={index}>
                         <RequestInstitutionCard id={_id} name={title} address={address} description={description} link={link} imagePath={imagePath} userID={userRequestID} />
                     </Spacer>

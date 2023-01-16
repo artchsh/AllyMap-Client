@@ -96,16 +96,16 @@ type PropsInstitutionCard = {
 
 export default function InstitutionCard({ userID, id, name, address, status, description, link, imagePath, city }: PropsInstitutionCard) {
 	// States
-	const [openRateDialog, setRateDialogOpen] = useState(false)
-	const [showRate, setShowRate] = useState('')
-	const [showRateColor, setShowRateColor] = useState('')
-	const [comments, setComments] = useState([])
-	const [loadingRate, setLoadingRate] = useState(false)
-	const [rate, setRate] = useState(5)
-	const [commentContent, setCommentContent] = useState('')
-	const [error, setError] = useState(false)
-	const [rerender, setRerender] = useState(1)
-	const [showComments, setShowComments] = useState(false)
+	const [openRateDialog, setRateDialogOpen] = useState<boolean>(false)
+	const [showRate, setShowRate] = useState<string>('')
+	const [showRateColor, setShowRateColor] = useState<string>('')
+	const [comments, setComments] = useState<Array<PropsComment>>([])
+	const [loadingRate, setLoadingRate] = useState<boolean>(false)
+	const [rate, setRate] = useState<number>(5)
+	const [commentContent, setCommentContent] = useState<string>('')
+	const [error, setError] = useState<boolean>(false)
+	const [rerender, setRerender] = useState<number>(1)
+	const [showComments, setShowComments] = useState<boolean>(false)
 
 	// Handlers
 	const handleRateChange = (event: Event) => {
@@ -115,9 +115,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 	const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCommentContent(event.target.value)
 	}
-	// Url transform for showing image
-	const unformattedURL = `${API.baseURL}\\` + `${imagePath}`
-	let formattedImageURL = unformattedURL.replace(/\\/g, "/")
+
 	// Checking if userID exist 
 	if (userID == null) {
 		localStorage.removeItem('token')
@@ -198,7 +196,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 	}
 
 	// Marks for slider
-	const marks = [
+	const marks: Array<{ value: number, label: JSX.Element }> = [
 		{
 			value: 0,
 			label: <DangerousIcon sx={{ color: red[500] }} />,
@@ -235,9 +233,11 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 						<p style={{ color: themeColor[11] }}>{status[1]}</p>
 					</div>
 				</div>
-				{imagePath != undefined && imagePath != '' && imagePath != 'http://localhost:3000/' && imagePath != 'https://hammerhead-app-q63fx.ondigitalocean.app/' &&
-					<div className='pt-2' style={{ height: 360, objectFit: 'cover', overflow: 'hidden' }}>
-						<img src={formattedImageURL} />
+				{imagePath != undefined && imagePath != '' &&
+					<div className='pt-2 mt-2 mb-2'>
+						<div className='flex justify-center '>
+							<img src={imagePath} className='min-w-full' style={{ aspectRatio: '1/1', objectFit: 'cover', overflow: 'hidden' }} />
+						</div>
 					</div>
 				}
 				<div className='mt-4 px-4 '>

@@ -23,7 +23,7 @@ width: fit-content;
 
 export default function UsersControl() {
     // States
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState<Array<UserProp>>([])
 
     async function fetchRequests() {
         axios.post(`${API.baseURL}/users/find/all`)

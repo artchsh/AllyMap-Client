@@ -18,8 +18,8 @@ export default function Login() {
 	const isAuthenticated = useIsAuthenticated()
 
 	// States
-	const [login, setLogin] = React.useState('')
-	const [password, setPassword] = React.useState('')
+	const [login, setLogin] = React.useState<string>('')
+	const [password, setPassword] = React.useState<string>('')
 
 	// Handlers 
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {

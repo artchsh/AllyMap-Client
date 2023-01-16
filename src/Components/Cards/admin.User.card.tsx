@@ -19,7 +19,7 @@ type Props = {
 
 export default function UserCard({ id, login, inviteCode, acceptCode }: Props) {
     // States
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     // Functions
     function remove() {

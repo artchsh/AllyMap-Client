@@ -66,12 +66,12 @@ export default function InstitutionsControl() {
 	const isAuthenticated = useIsAuthenticated()
 	const navigate = useNavigate()
 	const authStateUser = useAuthUser()
-	const user = authStateUser() || {}
+	const user = authStateUser()
 
 	// States
-	const [institutions, setInstitutions] = useState([])
-	const [filter, setFilter] = useState('')
-	const [ADMINS, setADMINS] = useState([])
+	const [institutions, setInstitutions] = useState<Array<InstitutionProps>>([])
+	const [filter, setFilter] = useState<string>('')
+	const [ADMINS, setADMINS] = useState<string[]>([])
 	const isAdmin = ADMINS.includes(user._id)
 
 	// Handlers
@@ -125,7 +125,7 @@ export default function InstitutionsControl() {
 						/>
 					</Search>
 				</div>
-				
+
 				<Wrapper>
 					{institutions.map((institution: InstitutionProps, index: number) => (
 						institution.title.includes(filter) &&

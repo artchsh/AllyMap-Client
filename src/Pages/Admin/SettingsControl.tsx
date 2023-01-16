@@ -9,10 +9,10 @@ import AdminControlPanelLayout from '../../Layouts/AdminControlPanel.layout'
 
 export default function SettingsControl() {
     // States
-    const [name, setName] = useState('')
-    const [version, setVersion] = useState('')
-    const [admins, setAdmins] = useState([])
-    const [disableSaveButton, setDisableSaveButton] = useState(true)
+    const [name, setName] = useState<string>('')
+    const [version, setVersion] = useState<string>('')
+    const [admins, setAdmins] = useState<string[]>([])
+    const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true)
 
     // Functions
     function getConfig() {
@@ -77,7 +77,6 @@ export default function SettingsControl() {
                     id="name"
                     label="Имя проекта"
                     name="name"
-                    autoFocus
                 />
                 <TextField
                     InputLabelProps={{ shrink: true }}
@@ -100,14 +99,14 @@ export default function SettingsControl() {
                     id="admins"
                 />
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Button 
-                    type="submit" 
-                    color="success" 
-                    fullWidth 
-                    variant="contained" 
-                    size='small'
-                    sx={{ mt: 2, mb: 2 }}
-                    disabled={disableSaveButton}>
+                    <Button
+                        type="submit"
+                        color="success"
+                        fullWidth
+                        variant="contained"
+                        size='small'
+                        sx={{ mt: 2, mb: 2 }}
+                        disabled={disableSaveButton}>
                         Сохранить
                     </Button>
                     <Button type="button" fullWidth variant="contained" onClick={() => { loadInputs() }} sx={{ mt: 2, mb: 2, ml: 1 }} >

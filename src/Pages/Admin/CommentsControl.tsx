@@ -17,7 +17,7 @@ type Comment = {
 
 export default function CommentsControl() {
     // States
-    const [comments, setComments] = useState([])
+    const [comments, setComments] = useState<Array<Comment>>([])
 
     // Functions
     function getComments() {

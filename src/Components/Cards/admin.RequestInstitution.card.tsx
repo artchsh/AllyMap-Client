@@ -22,12 +22,9 @@ type Props = {
 }
 
 export default function AdminRequestInstitutionCard({ id, name, address, description, link, imagePath, userID }: Props) {
-    // Setups
-    const unformattedURL = `${API.baseURL}\\` + `${imagePath}`
-    let formattedImageURL = unformattedURL.replace(/\\/g, "/")
 
     // States
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     // Functions
     function acceptRequest() {
@@ -37,7 +34,7 @@ export default function AdminRequestInstitutionCard({ id, name, address, descrip
                 _id: id
             }
         }).then((res) => {
-            if(!res.data.err) {
+            if (!res.data.err) {
                 window.location.reload()
             } else {
                 notification.custom.error(res.data.err)
@@ -65,8 +62,8 @@ export default function AdminRequestInstitutionCard({ id, name, address, descrip
     return (
         <>
             <Card sx={{ width: '95vw', maxWidth: 500 }} square>
-                <CardHeader title={name} subheader={`ID пользователя: ${userID}`}/>
-                {imagePath != undefined && imagePath != '' && <CardMedia component='img' height="240" image={formattedImageURL} />}
+                <CardHeader title={name} subheader={`ID пользователя: ${userID}`} />
+                {imagePath != undefined && imagePath != '' && <CardMedia component='img' height="240" image={imagePath} />}
                 <CardContent>
                     <Typography variant='body2' color='text.secondary'>
                         Адрес: {address}

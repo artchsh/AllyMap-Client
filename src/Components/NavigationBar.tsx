@@ -9,18 +9,18 @@ import { API } from '../../config/config'
 import { useAuthUser } from 'react-auth-kit'
 import { themeColor } from '../Utils/colors'
 
-const pages: Array<Array<String>> = [ ['Главная', '/'], ['Запросы', '/request'], ['Профиль', '/settings'] ]
-const pagesPaths: Array<String> = ['/','/request','/settings']
+const pages: Array<Array<String>> = [['Главная', '/'], ['Запросы', '/request'], ['Профиль', '/settings']]
+const pagesPaths: Array<String> = ['/', '/request', '/settings']
 
 export default function NavigationBar() {
 	// States
 	const [ADMINS, setADMINS] = React.useState<string[]>([])
-	const [currentPageIndex, setCurrentPageIndex]  = React.useState<number>(0)
+	const [currentPageIndex, setCurrentPageIndex] = React.useState<number>(0)
 
 	// Setups
 	const navigate = useNavigate()
 	const authStateUser = useAuthUser()
-	const user: { _id?: string } | null = authStateUser() || {}
+	const user: { _id?: string } | null = authStateUser()
 	const isAdmin: boolean = ADMINS.includes(user._id)
 
 	// Functions
@@ -33,11 +33,10 @@ export default function NavigationBar() {
 				notification.custom.error(response.data.err)
 			}
 		})
-		
+
 	}
 
 	function activeStyle(index: number, currentPageIndex: number) {
-		// if (index == parseInt(page)) {
 		if (index == currentPageIndex) {
 			return { backgroundColor: themeColor[5], borderRadius: 16, paddingLeft: 12, paddingRight: 12 }
 		} else {
@@ -60,22 +59,22 @@ export default function NavigationBar() {
 								{index == 0 && <Home />}
 								{index == 1 && <PostAddOutlinedIcon />}
 								{index == 2 && <PersonIcon />}
-								{index == 3 && <AdminPanelSettingsOutlinedIcon/>}
+								{index == 3 && <AdminPanelSettingsOutlinedIcon />}
 							</div>
 							<label>{page[0]}</label>
 						</div>
 					</button>
 				))}
-				{ isAdmin &&
+				{isAdmin &&
 					<button onClick={() => { navigate('/admin') }}>
-					<div className='flex flex-col justify-center items-center'>
-						<div style={activeStyle(3, currentPageIndex)}>
-							<AdminPanelSettingsOutlinedIcon/>
+						<div className='flex flex-col justify-center items-center'>
+							<div style={activeStyle(3, currentPageIndex)}>
+								<AdminPanelSettingsOutlinedIcon />
+							</div>
+							<label>Админ</label>
 						</div>
-						<label>Админ</label>
-						</div>
-				</button>}
+					</button>}
 			</div>
 		</header>
-		)
-	}
+	)
+}

@@ -33,9 +33,9 @@ export default function Settings() {
     const user = authStateUser() || {}
 
     // States
-    const [inviteCode, setInviteCode] = useState('')
-    const [usersInstututions, setUsersInstututions] = useState(0)
-    const [userRequestedInstututions, setUserRequestedInstututions] = useState(0)
+    const [inviteCode, setInviteCode] = useState<string>('')
+    const [usersInstututions, setUsersInstututions] = useState<number>(0)
+    const [userRequestedInstututions, setUserRequestedInstututions] = useState<number>(0)
 
     // Functions
     function getAllInstitutions() {

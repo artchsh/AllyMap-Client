@@ -19,10 +19,10 @@ export default function Register() {
 	const isAuthenticated = useIsAuthenticated()
 
 	// States
-	const [login, setLogin] = React.useState('')
-	const [password, setPassword] = React.useState('')
-	const [inviteCode, setInviteCode] = React.useState('')
-	const [registerButtonDisabled, setRegisterButtonDisabled] = React.useState(false)
+	const [login, setLogin] = React.useState<string>('')
+	const [password, setPassword] = React.useState<string>('')
+	const [inviteCode, setInviteCode] = React.useState<string>('')
+	const [registerButtonDisabled, setRegisterButtonDisabled] = React.useState<boolean>(false)
 
 	// States
 	const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,11 +101,11 @@ export default function Register() {
 						<p className='text-sm'>Уже есть аккаунт? <Link className='' style={{ color: themeColor[7] }} to={'/login'}>Войти</Link></p>
 					</div>
 					<div className='flex flex-end items-center mb-2'>
-						<AccountCircle className='mr-2'/>
+						<AccountCircle className='mr-2' />
 						<TextField label="Логин" variant="outlined" onChange={handleLoginChange} onBlur={handleOnBlurLoginInput} />
 					</div>
 					<div className='flex flex-end items-center mb-2'>
-						<Password className='mr-2'/>
+						<Password className='mr-2' />
 						<TextField label="Пароль" variant="outlined" type="password" onChange={handlePasswordChange} onBlur={handleOnBlurPasswordInput} />
 					</div>
 					<div className='flex flex-end items-center mb-2'>
@@ -113,12 +113,12 @@ export default function Register() {
 						<TextField label="Инвайт-код" variant="outlined" onChange={handleInviteChange} onBlur={handleOnBlurInviteCodeInput} />
 					</div>
 					<div className='flex justify-center items-center' style={{ marginTop: 12 }}>
-						<Button 
-						onClick={register} 
-						sx={{ borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, width: '100%', border: 1 }} 
-						variant='outlined' 
-						fullWidth 
-						disabled={registerButtonDisabled}>
+						<Button
+							onClick={register}
+							sx={{ borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, width: '100%', border: 1 }}
+							variant='outlined'
+							fullWidth
+							disabled={registerButtonDisabled}>
 							Зарегистрироваться</Button>
 					</div>
 				</div>

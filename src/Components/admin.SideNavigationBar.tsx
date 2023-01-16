@@ -51,7 +51,7 @@ export default function NavigationBar() {
     // Setups
     const navigate = useNavigate()
     const authStateUser = useAuthUser()
-    const user: { _id?: string } | null = authStateUser() || {}
+    const user: { _id?: string } | null = authStateUser()
 
     // Functions
     function fetchAdmins() {

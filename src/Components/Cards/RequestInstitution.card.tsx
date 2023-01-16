@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { API } from '../../../config/config'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { themeColor } from '../../Utils/colors'
@@ -17,9 +16,6 @@ type Props = {
 }
 
 export default function RequestInstitutionCard({ name, address, description, link, imagePath, city }: Props) {
-	// Setups
-	const unformattedURL = `${API.baseURL}\\` + `${imagePath}`
-	let formattedImageURL = unformattedURL.replace(/\\/g, "/")
 	return (
 		<>
 			<div className='my-1 rounded-2xl w-full' style={{ backgroundColor: themeColor[2], width: '95vw' }}>
@@ -31,9 +27,11 @@ export default function RequestInstitutionCard({ name, address, description, lin
 						<h4 className='' style={{ color: themeColor[11] }}>{name}</h4>
 					</div>
 				</div>
-				{imagePath != undefined && imagePath != '' && imagePath != 'http://localhost:3000/' && imagePath != 'https://hammerhead-app-q63fx.ondigitalocean.app/' &&
-					<div className='pt-2' style={{ height: 360, objectFit: 'cover', overflow: 'hidden' }}>
-						<img src={formattedImageURL} />
+				{imagePath != undefined && imagePath != '' &&
+					<div className='pt-2 mt-2 mb-2'>
+						<div className='flex justify-center '>
+							<img src={imagePath} className='min-w-full' style={{ aspectRatio: '1/1', objectFit: 'cover', overflow: 'hidden' }} />
+						</div>
 					</div>
 				}
 				<div className='mt-4 px-4 '>
@@ -57,6 +55,7 @@ export default function RequestInstitutionCard({ name, address, description, lin
 		</>
 	)
 }
+
 RequestInstitutionCard.propTypes = {
 	name: PropTypes.string.isRequired,
 	address: PropTypes.any,

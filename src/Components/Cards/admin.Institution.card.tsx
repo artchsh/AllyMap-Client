@@ -24,6 +24,7 @@ import { red, yellow, green, grey } from '@mui/material/colors'
 import Box from '@mui/material/Box'
 import DialogTitle from '@mui/material/DialogTitle'
 import Dialog from '@mui/material/Dialog'
+import Autocomplete from "@mui/material/Autocomplete"
 
 const ExpandMore = styled((props: { expand: boolean; children?: React.ReactNode; onClick?: () => void }) => {
 	const { expand, ...other } = props
@@ -36,32 +37,47 @@ const ExpandMore = styled((props: { expand: boolean; children?: React.ReactNode;
 	}),
 }))
 
-export interface EditInstitutionDialogProps {
+interface EditInstitutionDialogProps {
 	open: boolean
 	institutionID: string
 	institutionTitle: string
+	onClose: Function
 }
 
+interface Institution {
+	title: string
+	description: string
+	address: string
+	city: string
+	link: string
+	imagePath: string
+}
+
+const cities: string[] = ['Алматы', 'Астана', 'Шымкент']
 function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 	// Setups
 	const { open, institutionID, institutionTitle } = props
+
 	// States
-	const [title, setTitle] = useState('')
-	const [description, setDescription] = useState('')
-	const [address, setAddress] = useState('')
-	const [link, setLink] = useState('')
-	const [imagePath, setImagePath] = useState('')
-	const [disableSaveButton, setDisableSaveButton] = useState(true)
+	const [title, setTitle] = useState<string>('')
+	const [description, setDescription] = useState<string>('')
+	const [city, setCity] = useState<string>('')
+	const [address, setAddress] = useState<string>('')
+	const [link, setLink] = useState<string>('')
+	const [imagePath, setImagePath] = useState<string>('')
+	const [disableSaveButton, setDisableSaveButton] = useState<boolean>(true)
 
 	// Functions
 	function getInstitutionData() {
 		axios.post(`${API.baseURL}/institutions/find`, { query: { _id: institutionID } }).then((res) => {
 			if (!res.data.err) {
-				setTitle(res.data[0].title)
-				setDescription(res.data[0].description)
-				setAddress(res.data[0].address)
-				setLink(res.data[0].link)
-				setImagePath(res.data[0].imagePath)
+				const institution: Institution = res.data[0]
+				setTitle(institution.title)
+				setDescription(institution.description)
+				setAddress(institution.address)
+				setLink(institution.link)
+				setImagePath(institution.imagePath)
+				setCity(institution.city)
 			} else {
 				notification.custom.error(res.data.err)
 			}
@@ -85,7 +101,7 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 		})
 			.then((res) => {
 				if (!res.data.err) {
-					window.location.reload(false)
+					window.location.reload()
 				} else {
 					notification.custom.error(res.data.err)
 				}
@@ -98,6 +114,7 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 		document.getElementById('address').value = address
 		document.getElementById('link').value = link
 		document.getElementById('imagePath').value = imagePath
+		document.getElementById('imagePath').value = city
 		setDisableSaveButton(false)
 	}
 
@@ -109,7 +126,7 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 		<Dialog open={open}>
 			<DialogTitle>Реадактировать заведение {institutionTitle}</DialogTitle>
 			<>
-				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ margin: 1}}>
+				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ margin: 1 }}>
 					<TextField InputLabelProps={{ shrink: true }}
 						margin="normal"
 						required
@@ -117,7 +134,6 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 						id="title"
 						label="Название заведения"
 						name="title"
-						autoFocus
 					/>
 					<TextField InputLabelProps={{ shrink: true }}
 						margin="normal"
@@ -126,7 +142,12 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 						name="description"
 						label="Описание"
 						id="description"
-					/> 
+					/>
+					<Autocomplete
+						options={cities}
+						onInputChange={(event, newInputValue) => { setCity(newInputValue) }}
+						className='mt-3 w-full rounded-3xl'
+						renderInput={(params) => <TextField variant='outlined' {...params} label="Город" id='city' />} />
 					<TextField InputLabelProps={{ shrink: true }}
 						margin="normal"
 						required
@@ -173,11 +194,11 @@ type PropsUserComments = {
 
 function UserComments({ userID, rate, comment }: PropsUserComments) {
 	// States
-	const [user, setUser] = useState('')
+	const [user, setUser] = useState<string>('')
 
 	// Functions
 	function getUser() {
-		let query = { query: { _id: userID } }
+		const query: { query: { _id: string } } = { query: { _id: userID } }
 		axios.post(`${API.baseURL}/users/find`, query).then((response) => { if (!response.data.err) { setUser(response.data.login) } else { notification.custom.error(res.data.err) } })
 	}
 
@@ -243,19 +264,17 @@ type PropsInstitutionCard = {
 
 export default function AdminInstitutionCard({ userID, id, name, address, description, link, imagePath }: PropsInstitutionCard) {
 	// Setups
-	const unformattedURL = `${API.baseURL}\\` + `${imagePath}`
-	let formattedImageURL = unformattedURL.replace(/\\/g, "/")
 	if (userID == null) {
 		localStorage.removeItem('token')
 		location.reload()
 	}
 
 	// States
-	const [showRate, setShowRate] = useState('')
-	const [showRateColor, setShowRateColor] = useState('')
-	const [comments, setComments] = useState([])
-	const [expanded, setExpanded] = useState(false)
-	const [openEditDialog, setOpenEditDialog] = useState(false)
+	const [showRate, setShowRate] = useState<string>('')
+	const [showRateColor, setShowRateColor] = useState<string>('')
+	const [comments, setComments] = useState<Array<PropsComment>>([])
+	const [expanded, setExpanded] = useState<boolean>(false)
+	const [openEditDialog, setOpenEditDialog] = useState<boolean>(false)
 
 	// Handlers
 	const handleExpandClick = () => {
@@ -266,7 +285,7 @@ export default function AdminInstitutionCard({ userID, id, name, address, descri
 	function RemoveInstitutionCard() {
 		axios.post(`${API.baseURL}/institutions/remove`, { query: { _id: id } }).then((response) => {
 			if (!response.data.err) {
-				window.location.reload(false)
+				window.location.reload()
 			} else {
 				notification.custom.error(response.data.err)
 			}
@@ -338,7 +357,7 @@ export default function AdminInstitutionCard({ userID, id, name, address, descri
 		<Card sx={{ width: '95vw', maxWidth: '500px', marginBottom: -1.1 }}>
 			<EditInstitutionDialog open={openEditDialog} onClose={handleEditDialogClose} institutionID={id} institutionTitle={name} />
 			<CardHeader title={name} subheader={`ID пользователя: ${userID}`} avatar={<Avatar sx={{ bgcolor: showRateColor }} aria-label="recipe"> {showRate} </Avatar>} />
-			{imagePath != undefined && imagePath != '' && <CardMedia component='img' height="240" image={formattedImageURL} />}
+			{imagePath != undefined && imagePath != '' && <CardMedia component='img' height="240" image={imagePath} />}
 			<CardContent>
 				<Typography variant='body2' color='text.secondary'>
 					Адрес: {address}

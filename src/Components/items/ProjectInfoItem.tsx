@@ -7,8 +7,8 @@ import { axiosAuth as axios, notification } from '../../Utils'
 
 export default function ProjectInfoItem() {
     // States
-    const [NAME, setName] = useState('')
-    const [VERSION, setVersion] = useState('')
+    const [NAME, setName] = useState<string>('')
+    const [VERSION, setVersion] = useState<string>('')
 
     // Functions
     function fetchSettings() {
