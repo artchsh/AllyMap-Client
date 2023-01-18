@@ -1,5 +1,13 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/allymapi/kz.allymap.info/
-    - /bin/cp -R dist/ $DEPLOYPATH
+    - export DEPLOYPATH=/home/allymapi/public_html/
+    - /bin/cp -R dist/images $DEPLOYPATH
+    - /bin/cp -R dist/assets $DEPLOYPATH
+    - /bin/cp -R dist/.htaccess $DEPLOYPATH
+    - /bin/cp -R dist/index.html $DEPLOYPATH
+    - /bin/cp -R dist/manifest.webmanifest $DEPLOYPATH
+    - /bin/cp -R dist/registerSW.js $DEPLOYPATH
+    - /bin/cp -R dist/robots.txt $DEPLOYPATH
+    - /bin/cp -R dist/sw.js $DEPLOYPATH
+    - /bin/cp -R dist/workbox-7369c0e1.js $DEPLOYPATH
