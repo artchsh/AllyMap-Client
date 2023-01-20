@@ -1,16 +1,18 @@
 import React from "react"
-import AuthorIcon from '../../Images/author_picture.png'
+
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import styled from "@emotion/styled"
 
+import AuthorIcon from '@/Images/author_picture.png'
+
 const Link = styled.a`
     text-decoration: none;
     color: white;
-
 `
 
 export default function AuthorItem() {
+
     return (
         <div style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
             <Avatar src={AuthorIcon} />

@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
 import styled from 'styled-components'
-import { axiosAuth as axios, notification } from '../../Utils'
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import InstitutionCard from '../../Components/Cards/admin.Institution.card'
 import { useAuthUser, useIsAuthenticated } from 'react-auth-kit'
-import { API } from '../../../config/config'
 import SearchIcon from '@mui/icons-material/Search'
 import InputBase from '@mui/material/InputBase'
 import { styled as styledMUI, alpha } from '@mui/material/styles'
-import AdminControlPanelLayout from '../../Layouts/AdminControlPanel.layout'
+
+import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
+import InstitutionCard from '@/Components/Cards/admin.Institution.card'
+import { axiosAuth as axios, notification } from '@utils'
+import { API } from '@config'
+import { Institution_Data } from '@declarations'
+
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,6 +66,7 @@ const StyledInputBase = styledMUI(InputBase)(({ theme }) => ({
 }))
 
 export default function InstitutionsControl() {
+
 	// Setups
 	const isAuthenticated = useIsAuthenticated()
 	const navigate = useNavigate()
@@ -69,10 +74,8 @@ export default function InstitutionsControl() {
 	const user = authStateUser()
 
 	// States
-	const [institutions, setInstitutions] = useState<Array<InstitutionProps>>([])
+	const [institutions, setInstitutions] = useState<Array<Institution_Data>>([])
 	const [filter, setFilter] = useState<string>('')
-	const [ADMINS, setADMINS] = useState<string[]>([])
-	const isAdmin = ADMINS.includes(user._id)
 
 	// Handlers
 	function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -91,20 +94,9 @@ export default function InstitutionsControl() {
 		})
 	}
 
-	async function fetchAdmins() {
-		axios.get(`${API.baseURL}/config/`).then((response) => {
-			if (!response.data.err) {
-				setADMINS(response.data.admins)
-			} else {
-				notification.custom.error(response.data.err)
-			}
-		})
-	}
-
 	useEffect(() => {
 		if (isAuthenticated()) {
 			fetchInstitutions()
-			fetchAdmins()
 		} else {
 			navigate('/login')
 		}
@@ -127,7 +119,7 @@ export default function InstitutionsControl() {
 				</div>
 
 				<Wrapper>
-					{institutions.map((institution: InstitutionProps, index: number) => (
+					{institutions.map((institution, index: number) => (
 						institution.title.includes(filter) &&
 						<Spacer key={index}>
 							<InstitutionCard
@@ -139,7 +131,6 @@ export default function InstitutionsControl() {
 								id={institution._id}
 								link={institution.link}
 								userID={user._id}
-								isAdmin={isAdmin}
 							/>
 						</Spacer>
 					))}
@@ -147,15 +138,4 @@ export default function InstitutionsControl() {
 			</div>
 		</AdminControlPanelLayout>
 	)
-}
-type InstitutionProps = {
-	_id: string,
-	title: string,
-	name: string,
-	status: string,
-	description: string,
-	address: string,
-	id: string,
-	link: string,
-	imagePath: string
 }

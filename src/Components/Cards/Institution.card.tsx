@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react'
-import { API } from '../../../config/config'
+import React, { useState, useEffect } from 'react'
+
 import { red, yellow, green, grey } from '@mui/material/colors'
-import React from 'react'
-import PropTypes from 'prop-types'
 import Avatar from '@mui/material/Avatar'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Typography from '@mui/material/Typography'
-import { axiosAuth as axios, notification } from '../../Utils'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -14,8 +11,6 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
 import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import IconButton from '@mui/material/IconButton'
@@ -25,87 +20,70 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import Diversity1Icon from '@mui/icons-material/Diversity1'
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined'
-import { themeColor } from '../../Utils/colors'
 
-type PropsUserComments = {
-	userID: string,
-	rate: string,
-	comment: string
-}
-function UserComments({ userID, rate, comment }: PropsUserComments) {
+import { themeColor } from '@colors'
+import { UserComments_Props, Comments_Props, Comment_Props, InstitutionCard_Props } from '@declarations'
+import { API } from '@config'
+import { axiosAuth as axios, notification } from '@utils'
+
+function UserComments({ userID, rate, comment }: UserComments_Props) {
+
 	// States
-	const [user, setUser] = useState('')
+	const [user, setUser] = useState<string>('')
+
 	// Functions
 	function getUser() {
 		let query = { query: { _id: userID } }
-		axios.post(`${API.baseURL}/users/find`, query).then((response) => { if (!response.data.err) { setUser(response.data.login) } else { notification.custom.error(response.data.err) } })
+		axios.post(`${API.baseURL}/users/find`, query).then((response) => {
+			if (!response.data.err) {
+				setUser(response.data.login)
+			} else {
+				notification.custom.error(response.data.err)
+			}
+		})
 	}
 	useEffect(() => {
 		getUser()
 	}, [])
 	return (
 		<>
-			<ListItem alignItems="flex-start">
+			<div className='flex'>
 				<ListItemText
 					primary={user + ` - ${rate}`}
-					secondary={
-						<React.Fragment>
-							{comment}
-						</React.Fragment>
-					}
+					secondary={comment}
 				/>
-			</ListItem>
+			</div>
 			<Divider />
 		</>
 	)
 }
 
-type PropsComments = {
-	comments: any,
-	id: string
-}
-type PropsComment = {
-	rate: string,
-	userID: string,
-	institutionID: string,
-	content: string
-}
-
-function Comments({ comments, id }: PropsComments) {
+function Comments({ comments, id }: Comments_Props) {
 	return (
-		<List sx={{ width: '100%', maxWidth: '500px' }}>
-			{comments.map(({ rate, userID, institutionID, content }: PropsComment, index: number) => (
+		<div style={{ width: '100%', maxWidth: '500px', overflowY: 'scroll' }} className='h-full'>
+			{comments.map(({ rate, userID, institutionID, content }, index: number) => (
 				institutionID == id && <UserComments key={index} userID={userID} rate={rate} comment={content} />
 			))}
-		</List>
+			<div className='mt-3' style={{ height: 1, width: 1 }}></div>
+		</div>
 	)
 }
 
-type PropsInstitutionCard = {
-	userID: string,
-	id: string,
-	name: string,
-	address: string,
-	status: string,
-	description: string,
-	link: string,
-	imagePath: string,
-	isAdmin: boolean,
-	city: string
-}
-
-export default function InstitutionCard({ userID, id, name, address, status, description, link, imagePath, city }: PropsInstitutionCard) {
+export default function InstitutionCard({ userID, id, name, address, status, description, link, imagePath, city }: InstitutionCard_Props) {
 	// States
 	const [openRateDialog, setRateDialogOpen] = useState<boolean>(false)
 	const [showRate, setShowRate] = useState<string>('')
 	const [showRateColor, setShowRateColor] = useState<string>('')
-	const [comments, setComments] = useState<Array<PropsComment>>([])
+	const [comments, setComments] = useState<Array<Comment_Props>>([])
 	const [loadingRate, setLoadingRate] = useState<boolean>(false)
 	const [rate, setRate] = useState<number>(5)
 	const [commentContent, setCommentContent] = useState<string>('')
 	const [error, setError] = useState<boolean>(false)
 	const [rerender, setRerender] = useState<number>(1)
 	const [showComments, setShowComments] = useState<boolean>(false)
+
+	const [classes_showComments, classes_setShowComments] = useState<string>('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn')
+	const [classes_bottomSheet, classes_setBottomSheet] = useState<string>('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp')
 
 	// Handlers
 	const handleRateChange = (event: Event) => {
@@ -195,6 +173,16 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 		})
 	}
 
+	function handleCommentsClose() {
+		setTimeout(() => {
+			setShowComments(false)
+			classes_setShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn')
+			classes_setBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp')
+		}, 1000)
+		classes_setShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeOut')
+		classes_setBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideOutDown')
+	}
+
 	// Marks for slider
 	const marks: Array<{ value: number, label: JSX.Element }> = [
 		{
@@ -214,6 +202,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 	useEffect(() => {
 		getComments()
 	}, [rerender])
+	
 	let style = { display: 'none', zIndex: 500, backgroundColor: 'rgb(0,0,0,0.5)' }
 	if (showComments) {
 		style.display = 'block'
@@ -269,9 +258,9 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 				</div>
 			</div>
 			{showComments &&
-				<div className='fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn' style={style} >
-					<div className='relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp'>
-						<div onClick={() => { setShowComments(false) }} className='h-1/3 w-full' />
+				<div className={classes_showComments} style={style} >
+					<div className={classes_bottomSheet}>
+						<div onClick={handleCommentsClose} className='h-1/3 w-full' />
 						<div style={{ backgroundColor: themeColor[2], zIndex: 1000 }} className='h-2/3 absolute bottom-0 w-11/12 p-4 rounded-t-2xl'>
 							<h1 className='text-xl'>Комментарии</h1>
 							<Comments comments={comments} id={id} />
@@ -303,21 +292,4 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 			</Dialog>
 		</>
 	)
-}
-
-InstitutionCard.propTypes = {
-	name: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-	userID: PropTypes.string.isRequired,
-	address: PropTypes.any,
-	status: PropTypes.array.isRequired,
-	description: PropTypes.string.isRequired,
-	link: PropTypes.string.isRequired,
-	imagePath: PropTypes.string,
-	city: PropTypes.string.isRequired
-}
-
-Comments.propTypes = {
-	comments: PropTypes.array.isRequired,
-	id: PropTypes.string.isRequired
 }

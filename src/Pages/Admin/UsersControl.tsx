@@ -1,27 +1,29 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
-import { axiosAuth as axios, notification } from '../../Utils'
-import { API, MAIN_ADMIN_ID } from '../../../config/config'
+import React, { useEffect, useState } from 'react'
+
 import styled from 'styled-components'
-import UserCard from '../../Components/Cards/admin.User.card'
-import AdminControlPanelLayout from '../../Layouts/AdminControlPanel.layout'
+
+import UserCard from '@/Components/Cards/admin.User.card'
+import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
+import { API, MAIN_ADMIN_ID } from '@config'
+import { axiosAuth as axios, notification } from '@utils'
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
 `
 
 const Spacer = styled.div`
-display:flex;
-justify-content: center;
-align-items: center;
-margin: 10px;
-width: fit-content;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    width: fit-content;
 `
 
 export default function UsersControl() {
+
     // States
     const [users, setUsers] = useState<Array<UserProp>>([])
 

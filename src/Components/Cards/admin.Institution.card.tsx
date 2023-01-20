@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { styled } from '@mui/material/styles'
-import React from 'react'
-import PropTypes from 'prop-types'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -11,8 +10,6 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import { axiosAuth as axios, notification } from '../../Utils'
-import { API } from '../../../config/config'
 import IconButton from '@mui/material/IconButton'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse'
@@ -26,6 +23,10 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Dialog from '@mui/material/Dialog'
 import Autocomplete from "@mui/material/Autocomplete"
 
+import { axiosAuth as axios, notification } from '@utils'
+import { API } from '@config'
+import { Institution_Data, EditInstitutionDialog_Props, UserComments_Props, Comments_Props, Comment_Props, InstitutionCard_Props } from '@declarations'
+
 const ExpandMore = styled((props: { expand: boolean; children?: React.ReactNode; onClick?: () => void }) => {
 	const { expand, ...other } = props
 	return <IconButton {...other} />
@@ -37,24 +38,9 @@ const ExpandMore = styled((props: { expand: boolean; children?: React.ReactNode;
 	}),
 }))
 
-interface EditInstitutionDialogProps {
-	open: boolean
-	institutionID: string
-	institutionTitle: string
-	onClose: Function
-}
-
-interface Institution {
-	title: string
-	description: string
-	address: string
-	city: string
-	link: string
-	imagePath: string
-}
-
 const cities: string[] = ['Алматы', 'Астана', 'Шымкент']
-function EditInstitutionDialog(props: EditInstitutionDialogProps) {
+function EditInstitutionDialog(props: EditInstitutionDialog_Props) {
+
 	// Setups
 	const { open, institutionID, institutionTitle } = props
 
@@ -71,7 +57,7 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 	function getInstitutionData() {
 		axios.post(`${API.baseURL}/institutions/find`, { query: { _id: institutionID } }).then((res) => {
 			if (!res.data.err) {
-				const institution: Institution = res.data[0]
+				const institution: Institution_Data = res.data[0]
 				setTitle(institution.title)
 				setDescription(institution.description)
 				setAddress(institution.address)
@@ -125,81 +111,73 @@ function EditInstitutionDialog(props: EditInstitutionDialogProps) {
 	return (
 		<Dialog open={open}>
 			<DialogTitle>Реадактировать заведение {institutionTitle}</DialogTitle>
-			<>
-				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ margin: 1 }}>
-					<TextField InputLabelProps={{ shrink: true }}
-						margin="normal"
-						required
-						fullWidth
-						id="title"
-						label="Название заведения"
-						name="title"
-					/>
-					<TextField InputLabelProps={{ shrink: true }}
-						margin="normal"
-						required
-						fullWidth
-						name="description"
-						label="Описание"
-						id="description"
-					/>
-					<Autocomplete
-						options={cities}
-						onInputChange={(event, newInputValue) => { setCity(newInputValue) }}
-						className='mt-3 w-full rounded-3xl'
-						renderInput={(params) => <TextField variant='outlined' {...params} label="Город" id='city' />} />
-					<TextField InputLabelProps={{ shrink: true }}
-						margin="normal"
-						required
-						fullWidth
-						name="address"
-						label="Адрес"
-						id="address"
-					/>
-					<TextField InputLabelProps={{ shrink: true }}
-						margin="normal"
-						required
-						fullWidth
-						name="link"
-						label="Ссылка"
-						id="link"
-					/>
-					<TextField InputLabelProps={{ shrink: true }}
-						margin="normal"
-						required
-						fullWidth
-						name="imagePath"
-						label="Путь к картинке"
-						id="imagePath"
-					/>
-					<div style={{ display: 'flex', flexDirection: 'row' }}>
-						<Button type="submit" color="success" fullWidth variant="contained" sx={{ mt: 2, mb: 2, mr: 1 }} disabled={disableSaveButton}>
-							Сохранить
-						</Button>
-						<Button type="button" fullWidth variant="contained" onClick={() => { loadInputs() }} sx={{ mt: 2, mb: 2, ml: 1 }} >
-							Загрузить текущие настройки...
-						</Button>
-					</div>
-				</Box>
-			</>
+			<Box component="form" noValidate onSubmit={handleSubmit} sx={{ margin: 1 }}>
+				<TextField InputLabelProps={{ shrink: true }}
+					margin="normal"
+					required
+					fullWidth
+					id="title"
+					label="Название заведения"
+					name="title"
+				/>
+				<TextField InputLabelProps={{ shrink: true }}
+					margin="normal"
+					required
+					fullWidth
+					name="description"
+					label="Описание"
+					id="description"
+				/>
+				<Autocomplete
+					options={cities}
+					onInputChange={(event, newInputValue) => { setCity(newInputValue) }}
+					className='mt-3 w-full rounded-3xl'
+					renderInput={(params) => <TextField variant='outlined' {...params} label="Город" id='city' />} />
+				<TextField InputLabelProps={{ shrink: true }}
+					margin="normal"
+					required
+					fullWidth
+					name="address"
+					label="Адрес"
+					id="address"
+				/>
+				<TextField InputLabelProps={{ shrink: true }}
+					margin="normal"
+					required
+					fullWidth
+					name="link"
+					label="Ссылка"
+					id="link"
+				/>
+				<TextField InputLabelProps={{ shrink: true }}
+					margin="normal"
+					required
+					fullWidth
+					name="imagePath"
+					label="Путь к картинке"
+					id="imagePath"
+				/>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
+					<Button type="submit" color="success" fullWidth variant="contained" sx={{ mt: 2, mb: 2, mr: 1 }} disabled={disableSaveButton}>
+						Сохранить
+					</Button>
+					<Button type="button" fullWidth variant="contained" onClick={() => { loadInputs() }} sx={{ mt: 2, mb: 2, ml: 1 }} >
+						Загрузить текущие настройки...
+					</Button>
+				</div>
+			</Box>
 		</Dialog>
 	)
 }
 
-type PropsUserComments = {
-	userID: string,
-	rate: string,
-	comment: string
-}
-
-function UserComments({ userID, rate, comment }: PropsUserComments) {
+function UserComments({ userID, rate, comment }: UserComments_Props) {
 	// States
 	const [user, setUser] = useState<string>('')
 
 	// Functions
 	function getUser() {
 		const query: { query: { _id: string } } = { query: { _id: userID } }
-		axios.post(`${API.baseURL}/users/find`, query).then((response) => { if (!response.data.err) { setUser(response.data.login) } else { notification.custom.error(res.data.err) } })
+		axios.post(`${API.baseURL}/users/find`, query).then((response) => { if (!response.data.err) { setUser(response.data.login) } else { notification.custom.error(response.data.err) } })
 	}
 
 	useEffect(() => {
@@ -222,26 +200,13 @@ function UserComments({ userID, rate, comment }: PropsUserComments) {
 	)
 }
 
-type PropsComments = {
-	comments: any,
-	expanded: boolean,
-	id: string
-}
-
-type PropsComment = {
-	rate: string,
-	userID: string,
-	institutionID: string,
-	content: string
-}
-
-function Comments({ comments, expanded, id }: PropsComments) {
+function Comments({ comments, expanded, id }: Comments_Props) {
 	return (
 		<Collapse in={expanded} timeout="auto" unmountOnExit>
 			<CardContent>
 				<Typography paragraph>Comments:</Typography>
 				<List sx={{ width: '100%', maxWidth: '500px' }}>
-					{comments.map(({ rate, userID, institutionID, content }: PropsComment, index: number) => (
+					{comments.map(({ rate, userID, institutionID, content }, index: number) => (
 						institutionID == id && <UserComments key={index} userID={userID} rate={rate} comment={content} />
 					))}
 				</List>
@@ -250,19 +215,9 @@ function Comments({ comments, expanded, id }: PropsComments) {
 	)
 }
 
-type PropsInstitutionCard = {
-	userID: string,
-	id: string,
-	name: string,
-	address: string,
-	status: string,
-	description: string,
-	link: string,
-	imagePath: string,
-	isAdmin: boolean
-}
 
-export default function AdminInstitutionCard({ userID, id, name, address, description, link, imagePath }: PropsInstitutionCard) {
+
+export default function AdminInstitutionCard({ userID, id, name, address, description, link, imagePath }: InstitutionCard_Props) {
 	// Setups
 	if (userID == null) {
 		localStorage.removeItem('token')
@@ -272,7 +227,7 @@ export default function AdminInstitutionCard({ userID, id, name, address, descri
 	// States
 	const [showRate, setShowRate] = useState<string>('')
 	const [showRateColor, setShowRateColor] = useState<string>('')
-	const [comments, setComments] = useState<Array<PropsComment>>([])
+	const [comments, setComments] = useState<Array<Comment_Props>>([])
 	const [expanded, setExpanded] = useState<boolean>(false)
 	const [openEditDialog, setOpenEditDialog] = useState<boolean>(false)
 
@@ -378,21 +333,4 @@ export default function AdminInstitutionCard({ userID, id, name, address, descri
 			<Comments expanded={expanded} comments={comments} id={id} />
 		</Card>
 	)
-}
-
-AdminInstitutionCard.propTypes = {
-	name: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
-	userID: PropTypes.string.isRequired,
-	address: PropTypes.any,
-	status: PropTypes.array.isRequired,
-	description: PropTypes.string.isRequired,
-	link: PropTypes.string.isRequired,
-	imagePath: PropTypes.string
-}
-
-Comments.propTypes = {
-	expanded: PropTypes.bool.isRequired,
-	comments: PropTypes.array.isRequired,
-	id: PropTypes.string.isRequired
 }

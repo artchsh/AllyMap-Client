@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
-import { API } from "../../../config/config"
-import { useEffect, useState } from 'react'
-import { axiosAuth as axios, notification } from '../../Utils'
+
+import { API } from "@config"
+import { axiosAuth as axios, notification } from '@utils'
 
 export default function ProjectInfoItem() {
+
     // States
     const [NAME, setName] = useState<string>('')
     const [VERSION, setVersion] = useState<string>('')

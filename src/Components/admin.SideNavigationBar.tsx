@@ -1,19 +1,18 @@
 import * as React from 'react'
 
 import PersonIcon from '@mui/icons-material/Person'
-import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined'
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined'
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined'
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined'
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined'
 import Home from '@mui/icons-material/Home'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
-
 import { useNavigate } from 'react-router-dom'
 import { useAuthUser } from 'react-auth-kit'
-import { themeColor } from '../Utils/colors'
-import { axiosAuth as axios, notification } from '../Utils'
-import { API } from '../../config/config'
+
+import { themeColor } from '@colors'
+import { axiosAuth as axios, notification } from '@utils'
+import { API } from '@config'
 
 const pages: Array<Array<String>> = [
     ['Comments', '/admin/comments'],
@@ -44,6 +43,7 @@ const pagesPaths2: Array<String> = [
 ]
 
 export default function NavigationBar() {
+
     // States
     const [currentPageIndex, setCurrentPageIndex] = React.useState<number>(0)
     const [currentPageIndex2, setCurrentPageIndex2] = React.useState<number>(0)

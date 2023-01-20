@@ -1,17 +1,19 @@
-import React from 'react'
-import { axiosAuth as axios, notification } from '../Utils'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import { useNavigate } from 'react-router-dom'
-import InstitutionCard from '../Components/Cards/Institution.card'
 import { useAuthUser, useIsAuthenticated, useAuthHeader, useSignOut } from 'react-auth-kit'
-import { API } from '../../config/config'
 import SearchIcon from '@mui/icons-material/Search'
 import InputBase from '@mui/material/InputBase'
 import Autocomplete from "@mui/material/Autocomplete"
 import TextField from '@mui/material/TextField'
 import { styled as styledMUI, alpha } from '@mui/material/styles'
-import MainLayout from '../Layouts/Main.layout'
-import { themeColor } from '../Utils/colors'
+
+import InstitutionCard from '@/Components/Cards/Institution.card'
+import MainLayout from '@/Layouts/Main.layout'
+import { themeColor } from '@colors'
+import { API } from '@config'
+import { Institution_Data } from '@declarations'
+import { axiosAuth as axios, notification } from '@utils'
 
 const Search = styledMUI('div')(({ theme }) => ({
 	marginTop: 10,
@@ -58,20 +60,8 @@ const StyledInputBase = styledMUI(InputBase)(({ theme }) => ({
 
 const cities: string[] = ['Алматы', 'Астана', 'Шымкент']
 
-interface InstitutionProps {
-	city?: string
-	_id: string,
-	title: string,
-	name: string,
-	status: string,
-	description: string,
-	address: string,
-	id: string,
-	link: string,
-	imagePath?: string
-}
-
 export default function Main() {
+
 	// Setups
 	const isAuthenticated = useIsAuthenticated()
 	const navigate = useNavigate()
@@ -81,7 +71,7 @@ export default function Main() {
 	const authHeader = useAuthHeader()
 
 	// States
-	const [institutions, setInstitutions] = useState<Array<InstitutionProps | {}>>([])
+	const [institutions, setInstitutions] = useState<Array<Institution_Data>>([])
 	const [filter, setFilter] = useState<string>('')
 	const [ADMINS, setADMINS] = useState<string[]>([])
 	const [city, setCity] = useState<string>('')
@@ -154,7 +144,7 @@ export default function Main() {
 			</div>
 
 			<div className='flex justify-center flex-wrap'>
-				{institutions.map((institution: InstitutionProps, index: number) => (
+				{institutions.map((institution, index: number) => (
 					institution?.city?.includes(city) && (
 						institution?.title.includes(filter) && (
 							<InstitutionCard
@@ -167,7 +157,6 @@ export default function Main() {
 								id={institution._id}
 								link={institution.link}
 								userID={user._id}
-								isAdmin={isAdmin}
 								city={institution.city}
 							/>
 						)
@@ -175,7 +164,6 @@ export default function Main() {
 
 				))}
 			</div>
-			<div className='mt-20'></div>
 		</MainLayout>
 	)
 }

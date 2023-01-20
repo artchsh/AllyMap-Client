@@ -1,23 +1,15 @@
-import React from 'react'
-import AdminControlPanelLayout from '../../Layouts/AdminControlPanel.layout'
-import { axiosAuth as axios, notification } from '../../Utils'
-import { API } from '../../../config/config'
-import { useState, useEffect } from 'react'
-import AdminCommentCard from '../../Components/Cards/admin.Comment.card'
+import React, { useState, useEffect } from 'react'
 
-type Comment = {
-    _id: string,
-    userID: string,
-    institutionID: string,
-    date: string,
-    dateStamp: string,
-    content: string,
-    rate: string,
-}
+import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
+import AdminCommentCard from '@/Components/Cards/admin.Comment.card'
+import { API } from '@config'
+import { Comment_Data } from '@declarations'
+import { axiosAuth as axios, notification } from '@utils'
 
 export default function CommentsControl() {
+
     // States
-    const [comments, setComments] = useState<Array<Comment>>([])
+    const [comments, setComments] = useState<Array<Comment_Data>>([])
 
     // Functions
     function getComments() {
@@ -37,8 +29,8 @@ export default function CommentsControl() {
 
     return (
         <AdminControlPanelLayout>
-            {comments.map((comment: Comment, index) => (
-                <AdminCommentCard key={index} commentID={comment._id} userID={comment.userID} institutionID={comment.institutionID} text={comment.content} rate={comment.rate} />
+            {comments.map((comment, index) => (
+                <AdminCommentCard key={index} _id={comment._id} userID={comment.userID} institutionID={comment.institutionID} content={comment.content} rate={comment.rate} />
             ))}
         </AdminControlPanelLayout>
     )

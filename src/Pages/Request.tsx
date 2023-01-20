@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
 import { useAuthUser, useIsAuthenticated } from 'react-auth-kit'
 import { useNavigate } from 'react-router-dom'
-import { axiosAuth as axios, notification } from '../Utils'
-import { API } from '../../config/config'
 import styled from 'styled-components'
-import RequestInstitutionCard from '../Components/Cards/RequestInstitution.card'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Autocomplete from "@mui/material/Autocomplete"
@@ -14,36 +11,33 @@ import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
-import MainLayout from '../Layouts/Main.layout'
 import LoadingButton from '@mui/lab/LoadingButton'
-import { themeColor } from '../Utils/colors'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 
+import { axiosAuth as axios, notification } from '@utils'
+import { API } from '@config'
+import RequestInstitutionCard from '@/Components/Cards/RequestInstitution.card'
+import MainLayout from '@/Layouts/Main.layout'
+import { themeColor } from '@colors'
+import { RequestInstitution_Data } from '@declarations'
+
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
 `
 
 const Spacer = styled.div`
-  display:flex;
-  justify-content: center;
-  align-items: center;
+	display:flex;
+	justify-content: center;
+	align-items: center;
 `
 
 const cities: Array<{ label: string }> = [{ label: "Алматы" }, { label: "Астана" }, { label: "Шымкент" }]
 
-type InstitutionRequestProps = {
-	title: string
-	address: string
-	description: string
-	link: string
-	imagePath: string
-	city: string
-}
-
 export default function Request() {
+
 	// Setups
 	const isAuthenticated = useIsAuthenticated()
 	const authStateUser = useAuthUser()
@@ -59,7 +53,7 @@ export default function Request() {
 	const [city, setCity] = useState<string>('')
 	const [uploadingState, setUploadingState] = useState<boolean>(false)
 	const [open, setOpen] = useState<boolean>(false)
-	const [requests, setRequests] = useState<Array<InstitutionRequestProps>>([])
+	const [requests, setRequests] = useState<Array<RequestInstitution_Data>>([])
 
 	// Handlers
 	const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,8 +242,8 @@ export default function Request() {
 					</div>
 				</div>
 			</div>
-			<Wrapper style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', marginBottom: 100 }}>
-				{requests.map(({ title, address, description, link, imagePath, city }: InstitutionRequestProps, index: number) => (
+			<Wrapper>
+				{requests.map(({ title, address, description, link, imagePath, city }, index: number) => (
 					<Spacer key={index}>
 						<RequestInstitutionCard name={title} address={address} description={description} link={link} imagePath={imagePath} city={city} />
 					</Spacer>

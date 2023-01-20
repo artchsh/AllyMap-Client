@@ -1,13 +1,15 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import { API } from '../../../config/config'
-import { axiosAuth as axios, notification } from '../../Utils'
+import React, { useState, useEffect } from 'react'
+
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import AdminControlPanelLayout from '../../Layouts/AdminControlPanel.layout'
+
+import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
+import { API } from '@config'
+import { axiosAuth as axios, notification } from '@utils'
 
 export default function SettingsControl() {
+
     // States
     const [name, setName] = useState<string>('')
     const [version, setVersion] = useState<string>('')

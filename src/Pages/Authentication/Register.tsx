@@ -1,4 +1,5 @@
 import React from 'react'
+
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Password from '@mui/icons-material/Password'
 import Celebration from '@mui/icons-material/Celebration'
@@ -6,14 +7,16 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useIsAuthenticated } from 'react-auth-kit'
 import { useNavigate, Link } from 'react-router-dom'
-import { API } from '../../../config/config'
 import axios from 'axios'
-import { notification } from '../../Utils'
 import { Toaster } from 'react-hot-toast'
-import { themeColor } from '../../Utils/colors'
+
+import { themeColor } from '@colors'
+import { API } from '@config'
+import { notification } from '@utils'
 
 
 export default function Register() {
+
 	// Setups
 	const navigate = useNavigate()
 	const isAuthenticated = useIsAuthenticated()
