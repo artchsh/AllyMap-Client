@@ -1,16 +1,17 @@
 import React from 'react'
-
+import { Outlet } from "react-router-dom"
 import { Toaster } from 'react-hot-toast'
 import NavigationBar from '@/Components/NavigationBar'
 
-export default function MainLayout(props) {
+
+export default function MainLayout() {
 
     return (
         <>
-            <Toaster />
+            <Toaster containerStyle={{ marginBottom: 76 }} />
             <NavigationBar />
             <main>
-                {props.children}
+                <Outlet />
             </main>
         </>
     )

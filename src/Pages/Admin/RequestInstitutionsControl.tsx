@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import RequestInstitutionCard from '@/Components/Cards/admin.RequestInstitution.card'
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
 import { RequestInstitution_Data } from '@declarations'
 import { axiosAuth as axios, notification } from '@utils'
 import { API } from '@config'
@@ -54,7 +53,7 @@ export default function RequestInstitutionControl() {
     }, [])
 
     return (
-        <AdminControlPanelLayout>
+        <>
             <Wrapper>
                 {requests.map(({ _id, title, address, description, link, imagePath, userRequestID }, index) => (
                     <Spacer key={index}>
@@ -62,6 +61,6 @@ export default function RequestInstitutionControl() {
                     </Spacer>
                 ))}
             </Wrapper>
-        </AdminControlPanelLayout>
+        </>
     )
 }

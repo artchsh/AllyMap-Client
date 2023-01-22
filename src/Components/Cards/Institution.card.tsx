@@ -20,6 +20,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import Diversity1Icon from '@mui/icons-material/Diversity1'
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined'
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined'
+import { motion as m } from "framer-motion"
 
 import { themeColor } from '@colors'
 import { UserComments_Props, Comments_Props, Comment_Props, InstitutionCard_Props } from '@declarations'
@@ -202,7 +203,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 	useEffect(() => {
 		getComments()
 	}, [rerender])
-	
+
 	let style = { display: 'none', zIndex: 500, backgroundColor: 'rgb(0,0,0,0.5)' }
 	if (showComments) {
 		style.display = 'block'
@@ -212,7 +213,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 
 	return (
 		<>
-			<div className='my-1 mx-2 rounded-2xl w-full' style={{ backgroundColor: themeColor[2], maxWidth: '500px' }}>
+			<m.div key={`${id}`} className='my-1 mx-2 rounded-2xl w-full' style={{ backgroundColor: themeColor[2], maxWidth: '500px' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 				<div className='flex flex-start flex-row items-center p-4 pb-0'>
 					<div className='flex rounded-full'>
 						<Avatar sx={{ bgcolor: showRateColor }}>{showRate}</Avatar>
@@ -256,7 +257,7 @@ export default function InstitutionCard({ userID, id, name, address, status, des
 						</IconButton>
 					</div>
 				</div>
-			</div>
+			</m.div>
 			{showComments &&
 				<div className={classes_showComments} style={style} >
 					<div className={classes_bottomSheet}>

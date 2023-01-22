@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Avatar from '@mui/material/Avatar'
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined'
+import { motion as m } from "framer-motion"
 
 import { RequestInstitutionCard_Props } from '@declarations'
 import { themeColor } from '@colors'
@@ -11,7 +12,7 @@ import { themeColor } from '@colors'
 export default function RequestInstitutionCard({ name, address, description, link, imagePath, city }: RequestInstitutionCard_Props) {
 
 	return (
-		<div className='my-1 rounded-2xl w-full' style={{ backgroundColor: themeColor[2], width: '95vw' }}>
+		<m.div className='my-1 rounded-2xl w-full' style={{ backgroundColor: themeColor[2], width: '95vw' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 			<div className='flex flex-start flex-row items-center p-4 pb-0'>
 				<div className='flex rounded-full'>
 					<Avatar>{name[0]}</Avatar>
@@ -44,6 +45,6 @@ export default function RequestInstitutionCard({ name, address, description, lin
 					</IconButton>
 				</div>
 			</div>
-		</div>
+		</m.div>
 	)
 }

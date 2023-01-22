@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import UserCard from '@/Components/Cards/admin.User.card'
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
 import { API, MAIN_ADMIN_ID } from '@config'
 import { axiosAuth as axios, notification } from '@utils'
 
@@ -43,7 +42,7 @@ export default function UsersControl() {
     }, [])
 
     return (
-        <AdminControlPanelLayout>
+        <>
             <Wrapper>
                 {users.map(({ _id, login, inviteCode, acceptCode }: UserProp, index: number) => (
                     _id != MAIN_ADMIN_ID &&
@@ -52,7 +51,7 @@ export default function UsersControl() {
                     </Spacer>
                 ))}
             </Wrapper>
-        </AdminControlPanelLayout>
+        </>
     )
 }
 

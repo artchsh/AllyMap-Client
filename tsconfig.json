@@ -25,7 +25,7 @@
         "./src/Utils/.d.ts"
       ],
       "@utils": [
-        "./src/Utils/index.ts"
+        "src/Utils/index.ts"
       ],
       "@colors": [
         "./src/Utils/colors.ts"

@@ -7,7 +7,6 @@ import SearchIcon from '@mui/icons-material/Search'
 import InputBase from '@mui/material/InputBase'
 import { styled as styledMUI, alpha } from '@mui/material/styles'
 
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
 import InstitutionCard from '@/Components/Cards/admin.Institution.card'
 import { axiosAuth as axios, notification } from '@utils'
 import { API } from '@config'
@@ -103,7 +102,7 @@ export default function InstitutionsControl() {
 	}, [])
 
 	return (
-		<AdminControlPanelLayout>
+		<>
 			<div className='flex flex-col absolute top-20'>
 				<div style={{ display: 'flex', justifyContent: 'center' }}>
 					<Search>
@@ -136,6 +135,6 @@ export default function InstitutionsControl() {
 					))}
 				</Wrapper>
 			</div>
-		</AdminControlPanelLayout>
+		</>
 	)
 }

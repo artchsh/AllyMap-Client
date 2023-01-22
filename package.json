@@ -20,7 +20,7 @@
     "axios": "^1.2.1",
     "clipboard-polyfill": "^4.0.0-rc8",
     "eslint": "^8.30.0",
-    "framer-motion": "^8.2.4",
+    "framer-motion": "^8.5.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-auth-kit": "^2.7.1",

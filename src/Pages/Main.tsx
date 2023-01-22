@@ -7,9 +7,9 @@ import InputBase from '@mui/material/InputBase'
 import Autocomplete from "@mui/material/Autocomplete"
 import TextField from '@mui/material/TextField'
 import { styled as styledMUI, alpha } from '@mui/material/styles'
+import { motion as m, AnimatePresence } from "framer-motion"
 
 import InstitutionCard from '@/Components/Cards/Institution.card'
-import MainLayout from '@/Layouts/Main.layout'
 import { themeColor } from '@colors'
 import { API } from '@config'
 import { Institution_Data } from '@declarations'
@@ -32,6 +32,7 @@ const Search = styledMUI('div')(({ theme }) => ({
 		width: 'auto',
 	},
 }))
+
 
 const SearchIconWrapper = styledMUI('div')(({ theme }) => ({
 	padding: theme.spacing(0, 2),
@@ -73,9 +74,7 @@ export default function Main() {
 	// States
 	const [institutions, setInstitutions] = useState<Array<Institution_Data>>([])
 	const [filter, setFilter] = useState<string>('')
-	const [ADMINS, setADMINS] = useState<string[]>([])
 	const [city, setCity] = useState<string>('')
-	const isAdmin = ADMINS.includes(user._id)
 
 	// Handlers
 	function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,20 +101,9 @@ export default function Main() {
 		}
 	}
 
-	function fetchAdmins() {
-		axios.get(`${API.baseURL}/config/`).then((response) => {
-			if (!response.data.err) {
-				setADMINS(response.data.admins)
-			} else {
-				notification.custom.error(response.data.err)
-			}
-		})
-	}
-
 	useEffect(() => {
 		if (isAuthenticated()) {
 			fetchInstitutions()
-			fetchAdmins()
 			checkToken()
 		} else {
 			navigate('/login')
@@ -123,8 +111,8 @@ export default function Main() {
 	}, [])
 
 	return (
-		<MainLayout>
-			<div className='flex justify-center items-center flex-row mx-2 mb-1'>
+		<>
+			<m.div className='flex justify-center items-center flex-row mx-2 mb-1' initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 				<Search className='mr-2'>
 					<SearchIconWrapper>
 						<SearchIcon />
@@ -141,7 +129,7 @@ export default function Main() {
 					onInputChange={(event, newInputValue) => { setCity(newInputValue) }}
 					className='mt-3 w-full rounded-3xl'
 					renderInput={(params) => <TextField variant='outlined' {...params} label="Город" />} />
-			</div>
+			</m.div>
 
 			<div className='flex justify-center flex-wrap'>
 				{institutions.map((institution, index: number) => (
@@ -164,6 +152,6 @@ export default function Main() {
 
 				))}
 			</div>
-		</MainLayout>
+		</>
 	)
 }

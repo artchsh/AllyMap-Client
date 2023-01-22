@@ -8,6 +8,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 import axios from 'axios'
 import { Toaster } from 'react-hot-toast'
+import { motion as m } from 'framer-motion'
 
 import { notification } from '@utils'
 import { API } from '@config'
@@ -54,8 +55,7 @@ export default function Login() {
 				const error = response.data.err
 				notification.custom.error(error)
 			}
-		})
-
+		}).catch((r) => { notification.custom.error('Слишком часто! Попробуйте еще раз через 5 минут') })
 	}
 
 	React.useEffect(() => {
@@ -74,7 +74,7 @@ export default function Login() {
 	return (
 		<>
 			<Toaster />
-			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+			<m.div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 				<div>
 					<div className='mb-2'>
 						<h1 className='text-2xl'>Вход</h1>
@@ -94,7 +94,7 @@ export default function Login() {
 						Войти
 					</Button>
 				</div>
-			</div>
+			</m.div>
 		</>
 	)
 }

@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
 import { API } from '@config'
 import { axiosAuth as axios, notification } from '@utils'
 
@@ -69,7 +68,7 @@ export default function SettingsControl() {
     }, [])
 
     return (
-        <AdminControlPanelLayout>
+        <>
             <Box component="form" noValidate onSubmit={handleSubmit} className='p-4'>
                 <TextField
                     InputLabelProps={{ shrink: true }}
@@ -116,6 +115,6 @@ export default function SettingsControl() {
                     </Button>
                 </div>
             </Box>
-        </AdminControlPanelLayout>
+        </>
     )
 }

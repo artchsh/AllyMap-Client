@@ -13,10 +13,11 @@ const axiosAuth = axios.create({
 
 const notificationConfig: object = {
   style: {
-    borderRadius: "15px",
     background: "#302d38",
-    color: "#fff"
-  }
+    color: "#ffffff"
+  },
+  className: 'text-white rounded-xl',
+  position: 'bottom-left'
 }
 
 interface Notification {

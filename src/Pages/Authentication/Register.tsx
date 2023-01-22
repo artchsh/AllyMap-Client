@@ -9,6 +9,7 @@ import { useIsAuthenticated } from 'react-auth-kit'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import { Toaster } from 'react-hot-toast'
+import { motion as m } from 'framer-motion'
 
 import { themeColor } from '@colors'
 import { API } from '@config'
@@ -59,7 +60,7 @@ export default function Register() {
 				notification.custom.error(response.data.err)
 			}
 			return null
-		})
+		}).catch((r) => { notification.custom.error('Слишком часто! Попробуйте еще раз через 5 минут') })
 	}
 
 	function handleOnBlurLoginInput() {
@@ -97,7 +98,7 @@ export default function Register() {
 	return (
 		<>
 			<Toaster />
-			<div className='flex justify-center items-center h-screen flex-col'>
+			<m.div className='flex justify-center items-center h-screen flex-col' initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 				<div>
 					<div className='mb-2'>
 						<h1 className='text-2xl'>Регистрация</h1>
@@ -125,7 +126,7 @@ export default function Register() {
 							Зарегистрироваться</Button>
 					</div>
 				</div>
-			</div>
+			</m.div>
 		</>
 	)
 }

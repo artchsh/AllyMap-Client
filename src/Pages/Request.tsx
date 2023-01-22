@@ -17,15 +17,22 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import { axiosAuth as axios, notification } from '@utils'
 import { API } from '@config'
 import RequestInstitutionCard from '@/Components/Cards/RequestInstitution.card'
-import MainLayout from '@/Layouts/Main.layout'
+import { motion as m } from 'framer-motion'
 import { themeColor } from '@colors'
 import { RequestInstitution_Data } from '@declarations'
+
 
 const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
 	flex-direction: column;
+`
+
+const EndSpacer = styled.div`
+	width: 1px;
+	height: 1px;
+	margin-bottom: 100px;
 `
 
 const Spacer = styled.div`
@@ -144,7 +151,7 @@ export default function Request() {
 		}
 	}, [])
 	return (
-		<MainLayout>
+		<>
 			<Dialog open={open} onClose={closeAlert}>
 				<DialogContent>
 					<DialogContentText>
@@ -157,7 +164,7 @@ export default function Request() {
 					</Button>
 				</DialogActions>
 			</Dialog>
-			<div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+			<m.div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 				<div className='mb-1 mt-2 mx-2 rounded-2xl' style={{ backgroundColor: themeColor[2], maxWidth: '500px' }}>
 					<div>
 						<p className='ml-1 pt-4 px-4'>Запрос на добавление заведения</p>
@@ -208,10 +215,10 @@ export default function Request() {
 							<TextField
 								InputLabelProps={{ shrink: true }}
 								margin="normal"
-								required
 								id="input-link"
 								placeholder='https://...'
-								label="Ссылка на метку в карте"
+								required
+								label="Ссылка на метку в карте/сайт заведения"
 								onChange={handleLinkChange} />
 						</Box>
 					</div>
@@ -241,7 +248,7 @@ export default function Request() {
 						</div>
 					</div>
 				</div>
-			</div>
+			</m.div>
 			<Wrapper>
 				{requests.map(({ title, address, description, link, imagePath, city }, index: number) => (
 					<Spacer key={index}>
@@ -249,6 +256,7 @@ export default function Request() {
 					</Spacer>
 				))}
 			</Wrapper>
-		</MainLayout>
+			<EndSpacer />
+		</>
 	)
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout'
 import AdminCommentCard from '@/Components/Cards/admin.Comment.card'
 import { API } from '@config'
 import { Comment_Data } from '@declarations'
@@ -28,10 +27,10 @@ export default function CommentsControl() {
     }, [])
 
     return (
-        <AdminControlPanelLayout>
+        <>
             {comments.map((comment, index) => (
                 <AdminCommentCard key={index} _id={comment._id} userID={comment.userID} institutionID={comment.institutionID} content={comment.content} rate={comment.rate} />
             ))}
-        </AdminControlPanelLayout>
+        </>
     )
 }

@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import styled from "@emotion/styled"
 import ListItemAvatar from '@mui/material/ListItemAvatar'
+import { motion as m } from 'framer-motion'
 
 import { axiosAuth as axios, notification } from '@utils'
 import { API } from '@config'
@@ -77,9 +78,8 @@ export default function Settings() {
         getAllInstitutions()
     }, [])
     return (
-        <MainLayout>
-            <div className='flex justify-center w-full'>
-                <div className='max-w-xl'>
+        <m.div className='flex justify-center w-full' initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <div className='max-w-xl'>
                 <List>
                     <ListItem disablePadding>
                         <ListItemButton onClick={() => { window.open('https://www.patreon.com/charlzWeb/membership', '_blank') }}>
@@ -122,7 +122,7 @@ export default function Settings() {
                         </ListItemButton>
                     </ListItem>
                 </List>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+                <div className='flex justify-center items-center mt-5' style={{ marginBottom: 76 }}>
                     <Paper elevation={0} sx={{ background: 'none' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexDirection: 'row', margin: 10, background: 'none' }}>
@@ -146,8 +146,7 @@ export default function Settings() {
                         </div>
                     </Paper>
                 </div>
-                </div>
             </div>
-        </MainLayout>
+        </m.div>
     )
 }
