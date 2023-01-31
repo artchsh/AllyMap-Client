@@ -20,7 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { axiosAuth as axios, notification } from '@utils';
 import { API } from '@config';
 import PatreonIcon from '@/Images/patreon-app-icon.png';
-import AuthorIcon from '@/Images/author_picture.png';
+// import AuthorIcon from '@/Images/author_picture.png';
+import AuthorIcon from '@/Images/artchsh_icon.png';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
 
 const Link = styled.a`
@@ -135,7 +136,7 @@ export default function Settings() {
               >
                 <Avatar src={AuthorIcon} />
                 <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
-                  <Link href="https://github.com/bogdanshelest" target="_blank">Charlz</Link>
+                  <Link href="https://github.com/bogdanshelest" target="_blank">artchsh</Link>
                   <Typography variant="body2" color="text.secondary">
                     {t('settings.authors.developer_and_author_of_the_project')}
                   </Typography>
