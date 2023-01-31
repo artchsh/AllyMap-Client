@@ -1,24 +1,24 @@
-import axios from "axios"
-import { toast } from "react-hot-toast"
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
-let token = `${localStorage.getItem("_auth_type")} ${localStorage.getItem(
-  "_auth"
-)}`
+const token = `${localStorage.getItem('_auth_type')} ${localStorage.getItem(
+  '_auth',
+)}`;
 
 const axiosAuth = axios.create({
   headers: {
-    Authorization: token
-  }
-})
+    Authorization: token,
+  },
+});
 
 const notificationConfig: object = {
   style: {
-    background: "#302d38",
-    color: "#ffffff"
+    background: '#302d38',
+    color: '#ffffff',
   },
   className: 'text-white rounded-xl',
-  position: 'bottom-left'
-}
+  position: 'bottom-left',
+};
 
 interface Notification {
   custom: {
@@ -42,44 +42,44 @@ interface Notification {
 const notification: Notification = {
   custom: {
     error: (err: string) => {
-      toast.error(err, notificationConfig)
+      toast.error(err, notificationConfig);
     },
     success: (msg: string) => {
-      toast.success(msg, notificationConfig)
+      toast.success(msg, notificationConfig);
     },
     promise: (fn: any) => {
       toast.promise(
         fn,
         {
-          loading: "Загрузка...",
-          success: "Успешно загружено!",
-          error: "Произошла ошибка"
+          loading: 'Загрузка...',
+          success: 'Успешно загружено!',
+          error: 'Произошла ошибка',
         },
-        notificationConfig
-      )
-    }
+        notificationConfig,
+      );
+    },
   },
   login: {
     success: () => {
-      toast.success("Вы успешно вошли!", notificationConfig)
+      toast.success('Вы успешно вошли!', notificationConfig);
     },
     invalid: () => {
-      toast.error("Неправильный логин или пароль.", notificationConfig)
-    }
+      toast.error('Неправильный логин или пароль.', notificationConfig);
+    },
   },
   register: {
     success: () => {
-      toast.success("Вы успешно зарегистрировались!", notificationConfig)
+      toast.success('Вы успешно зарегистрировались!', notificationConfig);
     },
     invalid: () => {
-      toast.error("Такой логин уже существует", notificationConfig)
-    }
+      toast.error('Такой логин уже существует', notificationConfig);
+    },
   },
   server: {
     internalError: () => {
-      toast.error("Что-то пошло не так", notificationConfig)
-    }
-  }
-}
+      toast.error('Что-то пошло не так', notificationConfig);
+    },
+  },
+};
 
-export { axiosAuth, notification }
+export { axiosAuth, notification };

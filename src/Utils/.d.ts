@@ -75,13 +75,13 @@ export type Comments_Props = {
 }
 
 export type Comment_Props = {
-	rate?: string
-	userID?: string
-	institutionID?: string
-	content?: string
-    _id?: string
-    date?: string
-    dateStamp?: string
+	rate: string
+	userID: string
+	institutionID: string
+	content: string
+    _id: string
+    date: string
+    dateStamp: string
 }
 
 export type InstitutionCard_Props = {

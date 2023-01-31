@@ -1,34 +1,24 @@
-/* eslint-disable no-undef */
 module.exports = {
-	'env': {
-		'browser': true,
-		'es2021': true
-	},
-	'extends': [
-		'eslint:recommended',
-		'plugin:react/recommended'
-	],
-	'overrides': [
-	],
-	'parserOptions': {
-		'ecmaVersion': 'latest',
-		'sourceType': 'module'
-	},
-	'plugins': [
-		'react'
-	],
-	'rules': {
-		'indent': [
-			'error',
-			'space'
-		],
-		'quotes': [
-			'error',
-			'single'
-		],
-		'semi': [
-			'error',
-			'never'
-		]
-	}
+  env: {
+    browser: true,
+    es2021: true
+  },
+  extends: [
+    // 'plugin:react/recommended',
+    // 'standard-with-typescript',
+    'airbnb',
+    'airbnb-typescript'
+  ],
+  overrides: [
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json'
+  },
+  plugins: [
+    'react'
+  ],
+  rules: {
+  }
 }
