@@ -3,6 +3,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/allymapi/public_html/
     - /bin/cp -R dist/assets $DEPLOYPATH
+    - /bin/cp -R dist/locales $DEPLOYPATH
     - /bin/cp -R dist/images $DEPLOYPATH
     - /bin/cp dist/.htaccess $DEPLOYPATH
     - /bin/cp dist/index.html $DEPLOYPATH
