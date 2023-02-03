@@ -16,6 +16,7 @@ import Login from '@/Pages/Authentication/Login';
 import Register from '@/Pages/Authentication/Register';
 import Settings from '@/Pages/Settings';
 import Request from '@/Pages/Request';
+import Disclaimer from './Pages/Disclaimer.js';
 
 // Admin pages
 import RequestInstitutionControl from '@/Pages/Admin/RequestInstitutionsControl';
@@ -36,6 +37,10 @@ export default function App() {
     {
       path: '/register',
       element: <Register />,
+    },
+    {
+      path: '/disclaimer',
+      element: <Disclaimer />
     },
     {
       path: '/',

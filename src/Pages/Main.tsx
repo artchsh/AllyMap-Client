@@ -20,6 +20,7 @@ import { API } from '@config';
 import { type Institution_Data } from '@declarations';
 import { axiosAuth as axios, notification } from '@utils';
 import InstitutionCard from '@/Components/Cards/Institution.card';
+import PageAlert from '@/Components/PageAlert'
 
 const Search = styledMUI('div')(({ theme }) => ({
   marginTop: 10,
@@ -147,23 +148,24 @@ export default function Main() {
       </m.div>
 
       <div className="flex justify-center flex-wrap">
+        <PageAlert title='Предупреждение' description='Пожалуйста, прочтите дисклеймер.'/>
         {institutions.map((institution, index: number) => (
-				  institution?.city?.includes(city) && (
-				    institution?.title.includes(filter) && (
-							<InstitutionCard
-  key={index}
-  imagePath={institution.imagePath}
-  name={institution.title}
-  status={institution.status}
-  description={institution.description}
-  address={institution.address}
-  id={institution._id}
-  link={institution.link}
-  userID={user._id}
-  city={institution.city}
-							/>
-				    )
-				  )
+          institution?.city?.includes(city) && (
+            institution?.title.includes(filter) && (
+              <InstitutionCard
+                key={index}
+                imagePath={institution.imagePath}
+                name={institution.title}
+                status={institution.status}
+                description={institution.description}
+                address={institution.address}
+                id={institution._id}
+                link={institution.link}
+                userID={user._id}
+                city={institution.city}
+              />
+            )
+          )
 
         ))}
       </div>

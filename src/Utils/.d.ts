@@ -110,3 +110,8 @@ export type RequestInstitutionCard_Props = {
 export type NavigationBar_Props = {
 	children?: any
 }
+
+export type PageAlert_Props = {
+    title: string
+    description: string
+}
