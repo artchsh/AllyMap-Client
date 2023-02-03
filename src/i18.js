@@ -14,7 +14,7 @@ i18n.use(Backend)
     detection: {
       checkWhitelist: true,
     },
-    debug: true,
+    debug: false,
     whitelist: availableLanguages,
     interpolation: {
       escapeValue: false,

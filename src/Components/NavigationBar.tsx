@@ -31,7 +31,7 @@ export default function NavigationBar() {
   if (user == null) {
     navigate('/login');
   }
-  const isAdmin: boolean = ADMINS.includes(user._id);
+  const isAdmin: boolean = ADMINS.includes(user?._id!)
 
   // Functions
   function fetchAdmins() {
@@ -81,7 +81,7 @@ export default function NavigationBar() {
         ))}
         {isAdmin
           && (
-            <button type="button" onClick={() => { navigate('/admin'); setCount(count + 1); }}>
+            <button type="button" onClick={() => { window.location.href = `http://admin.allymap.info/`;; setCount(count + 1); }}>
               <div className="flex flex-col justify-center items-center">
                 <div style={activeStyle(3, currentPageIndex)} className={activeClasses(3, currentPageIndex)}>
                   <AdminPanelSettingsOutlinedIcon />

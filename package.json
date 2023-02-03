@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.112",
     "@mui/material": "^5.11.0",
+    "@mui/material-next": "^6.0.0-alpha.73",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.18",
     "@vitejs/plugin-react": "^3.0.0",

@@ -124,7 +124,7 @@ export default function Main() {
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
-            placeholder={t('main.search_box_institution')}
+            placeholder={t('main.search_box_institution')!}
             inputProps={{ 'aria-label': 'поиск' }}
             onChange={handleFilterChange}
             sx={{ width: '100%' }}
@@ -140,7 +140,7 @@ export default function Main() {
           >
             <MenuItem value="">{t('main.select_button_city_everything_option')}</MenuItem>
             {cities.map((_city: string) => (
-              <MenuItem value={_city}>{_city}</MenuItem>
+              <MenuItem key={_city} value={_city}>{_city}</MenuItem>
             ))}
 
           </Select>

@@ -23,12 +23,12 @@ const AllyMapTheme: ThemeOptions = createTheme({
       main: '#625b71',
     },
   },
-  shape: {
-    borderRadius: 15,
-  },
+  // shape: {
+  //   borderRadius: 15,
+  // },
 });
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={AllyMapTheme}>
       <CssBaseline />

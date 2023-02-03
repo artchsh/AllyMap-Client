@@ -105,7 +105,7 @@ export default function Request() {
       formData.append('link', link);
       formData.append('address', address);
       formData.append('userRequestID', user._id);
-      formData.append('image', file);
+      formData.append('image', file!);
       formData.append('city', city);
 
       axios.post(`${API.baseURL}/institutions/request/new`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
@@ -183,7 +183,7 @@ export default function Request() {
                 required
                 id="input-title"
                 label={t('request.inputs.title.label')}
-                placeholder={t('request.inputs.title.example')}
+                placeholder={t('request.inputs.title.example')!}
                 onChange={handleTitleChange}
               />
               <TextField
@@ -193,7 +193,7 @@ export default function Request() {
                 id="input-description"
                 label={t('request.inputs.description.label')}
                 multiline
-                placeholder={t('request.inputs.description.example')}
+                placeholder={t('request.inputs.description.example')!}
                 onChange={handleDescriptionChange}
               />
               <FormControl fullWidth style={{ marginTop: 8 }}>
@@ -205,8 +205,8 @@ export default function Request() {
                   onChange={(event: SelectChangeEvent) => { setCity(event.target.value); }}
                 >
                   <MenuItem value="">{t('main.select_button_city_everything_option')}</MenuItem>
-                  {cities.map((city: { label: string }) => (
-                    <MenuItem value={city.label}>{city.label}</MenuItem>
+                  {cities.map((_city: { label: string }) => (
+                    <MenuItem key={_city} value={_city.label}>{_city.label}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -216,7 +216,7 @@ export default function Request() {
                 required
                 id="input-address"
                 label={t('request.inputs.address.label')}
-                placeholder={t('request.inputs.address.example')}
+                placeholder={t('request.inputs.address.example')!}
                 onChange={handleAddressChange}
               />
               <TextField
@@ -260,7 +260,7 @@ export default function Request() {
                   type="file"
                   accept="image/png, image/jpeg, image/jpg"
                   data-filename={file}
-                  onChange={(event) => { setFile(event.target.files[0]); }}
+                  onChange={(event) => { setFile((event.target as HTMLInputElement).files![0]); }}
                   hidden
                 />
               </Button>

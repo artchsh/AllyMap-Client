@@ -8,7 +8,6 @@ import './i18.js';
 
 // Layouts
 import MainLayout from '@/Layouts/Main.layout';
-import AdminControlPanelLayout from '@/Layouts/AdminControlPanel.layout';
 
 // Pages
 import Main from '@/Pages/Main';
@@ -17,14 +16,6 @@ import Register from '@/Pages/Authentication/Register';
 import Settings from '@/Pages/Settings';
 import Request from '@/Pages/Request';
 import Disclaimer from './Pages/Disclaimer.js';
-
-// Admin pages
-import RequestInstitutionControl from '@/Pages/Admin/RequestInstitutionsControl';
-import InstitutionControl from '@/Pages/Admin/InstitutionsControl';
-import AdminIndex from '@/Pages/Admin';
-import UsersControl from '@/Pages/Admin/UsersControl';
-import SettingsControl from '@/Pages/Admin/SettingsControl';
-import CommentsControl from '@/Pages/Admin/CommentsControl';
 
 export default function App() {
   const loginPage: string = '/login';
@@ -59,37 +50,7 @@ export default function App() {
           element: <Settings />,
         },
       ],
-    },
-    {
-      path: '/admin',
-      element: <RequireAuth loginPath={loginPage}><AdminControlPanelLayout /></RequireAuth>,
-      children: [
-        {
-          index: true,
-          element: <AdminIndex />,
-        },
-        {
-          path: '/admin/institution-control',
-          element: <InstitutionControl />,
-        },
-        {
-          path: '/admin/request-institution-control',
-          element: <RequestInstitutionControl />,
-        },
-        {
-          path: '/admin/user-control',
-          element: <UsersControl />,
-        },
-        {
-          path: '/admin/settings',
-          element: <SettingsControl />,
-        },
-        {
-          path: '/admin/comments',
-          element: <CommentsControl />,
-        },
-      ],
-    },
+    }
   ];
 
   const router = useRoutes(routes);

@@ -23,13 +23,13 @@ export default function RequestInstitutionCard({
         </div>
       </div>
       {imagePath !== undefined && imagePath !== ''
-				&& (
-<div className="pt-2 mt-2 mb-2">
-  <div className="flex justify-center ">
-    <img src={imagePath} alt="" className="min-w-full" style={{ aspectRatio: '1/1', objectFit: 'cover', overflow: 'hidden' }} />
-  </div>
-</div>
-				)}
+        && (
+          <div className="pt-2 mt-2 mb-2">
+            <div className="flex justify-center ">
+              <img src={imagePath} alt="" className="min-w-full" style={{ aspectRatio: '1/1', objectFit: 'cover', overflow: 'hidden' }} />
+            </div>
+          </div>
+        )}
       <div className="mt-4 px-4 ">
         <Typography variant="body2" color="text.secondary">
           Адрес:
@@ -47,7 +47,7 @@ export default function RequestInstitutionCard({
         <div className="flex flex-row">
           <IconButton
             sx={{
-						  borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: 1,
+              borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: 1,
             }}
             onClick={() => { window.open(link, '_blank'); }}
           >

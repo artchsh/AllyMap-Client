@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
         }}
       >
         {languages.map((language) => (
-          <MenuItem value={language[0]}>{language[1]}</MenuItem>
+          <MenuItem key={language[0]} value={language[0]}>{language[1]}</MenuItem>
         ))}
       </Select>
     </FormControl>
