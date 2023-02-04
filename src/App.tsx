@@ -1,65 +1,67 @@
 // System
-import React, { Suspense } from 'react';
-import { AuthProvider, RequireAuth } from 'react-auth-kit';
-import { useRoutes } from 'react-router-dom';
-
-import type { RouteObject } from 'react-router-dom';
-import './i18.js';
+import React from 'react'
+import { AuthProvider, RequireAuth } from 'react-auth-kit'
+import { useRoutes } from 'react-router-dom'
+import { LazyMotion, domAnimation } from 'framer-motion'
+import type { RouteObject } from 'react-router-dom'
+import './i18.js'
 
 // Layouts
-import MainLayout from '@/Layouts/Main.layout';
+import MainLayout from './Layouts/Main.layout'
+import DefaultLayout from './Layouts/Default'
 
 // Pages
-import Main from '@/Pages/Main';
-import Login from '@/Pages/Authentication/Login';
-import Register from '@/Pages/Authentication/Register';
-import Settings from '@/Pages/Settings';
-import Request from '@/Pages/Request';
-import Disclaimer from './Pages/Disclaimer.js';
+import Main from './Pages/Main'
+import Login from './Pages/Authentication/Login.js'
+import Register from './Pages/Authentication/Register'
+import Settings from './Pages/Settings'
+import Request from './Pages/Request'
+import Disclaimer from './Pages/Disclaimer.js'
 
 export default function App() {
-  const loginPage: string = '/login';
 
-  const routes: RouteObject[] = [
-    {
-      path: '/login',
-      element: <Login />,
-    },
-    {
-      path: '/register',
-      element: <Register />,
-    },
-    {
-      path: '/disclaimer',
-      element: <Disclaimer />
-    },
-    {
-      path: '/',
-      element: <RequireAuth loginPath={loginPage}><MainLayout /></RequireAuth>,
-      children: [
-        {
-          index: true,
-          element: <Main />,
-        },
-        {
-          path: '/request',
-          element: <Request />,
-        },
-        {
-          path: '/settings',
-          element: <Settings />,
-        },
-      ],
-    }
-  ];
+	const loginPage = '/login'
 
-  const router = useRoutes(routes);
+	const routes: RouteObject[] = [
+		{
+			path: '/login',
+			element: <DefaultLayout><Login /></DefaultLayout>,
+		},
+		{
+			path: '/register',
+			element: <DefaultLayout><Register /></DefaultLayout>,
+		},
+		{
+			path: '/disclaimer',
+			element: <DefaultLayout><Disclaimer /></DefaultLayout>,
+		},
+		{
+			path: '/',
+			element: <RequireAuth loginPath={loginPage}><DefaultLayout><MainLayout /></DefaultLayout></RequireAuth>,
+			children: [
+				{
+					index: true,
+					element: <Main />,
+				},
+				{
+					path: '/request',
+					element: <Request />,
+				},
+				{
+					path: '/settings',
+					element: <Settings />,
+				},
+			],
+		}
+	]
 
-  return (
-    <Suspense fallback={null}>
-      <AuthProvider authType="localstorage" authName="_auth">
-        {router}
-      </AuthProvider>
-    </Suspense>
-  );
+	const router = useRoutes(routes)
+
+	return (
+		<LazyMotion features={domAnimation}>
+			<AuthProvider authType="localstorage" authName="_auth">
+				{router}
+			</AuthProvider>
+		</LazyMotion>
+	)
 }

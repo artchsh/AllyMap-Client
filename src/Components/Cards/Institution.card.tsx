@@ -1,58 +1,37 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
-
-import {
-  red, yellow, green, grey,
-} from '@mui/material/colors';
-import Avatar from '@mui/material/Avatar';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slider from '@mui/material/Slider';
-import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import IconButton from '@mui/material/IconButton';
-import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import DangerousIcon from '@mui/icons-material/Dangerous';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import Diversity1Icon from '@mui/icons-material/Diversity1';
-import StarOutlinedIcon from '@mui/icons-material/StarOutlined';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import { motion as m } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-
-import { themeColor } from '@colors';
-import {
-  type UserComments_Props, type Comments_Props, type Comment_Props, type InstitutionCard_Props,
-} from '@declarations';
-import { API } from '@config';
-import { axiosAuth as axios, notification } from '@utils';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React, { useState, useEffect } from 'react'
+import { red, yellow, green, grey } from '@mui/material/colors'
+import { Avatar, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Divider, ListItemText, IconButton } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
+import { InsertLinkOutlined, StarOutlined, Diversity1, WarningAmber, Dangerous, CommentOutlined } from '@mui/icons-material'
+import { m } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
+import { themeColor } from '@colors'
+import type { UserComments_Props, Comments_Props, Comment_Props, InstitutionCard_Props } from '@declarations'
+import { API } from '@config'
+import { axiosAuth as axios, notification } from '@utils'
+import { AxiosResponse } from 'axios'
 
 function UserComments({ userID, rate, comment }: UserComments_Props) {
   // States
-  const [user, setUser] = useState<string>('');
+  const [user, setUser] = useState<string>('')
 
   // Functions
   function getUser() {
-    const query = { query: { _id: userID } };
-    axios.post(`${API.baseURL}/users/find`, query).then((response) => {
+    const query = { query: { _id: userID } }
+    axios.post(`${API.baseURL}/users/find`, query).then((response: AxiosResponse) => {
       if (!response.data.err) {
-        setUser(response.data.login);
+        setUser(response.data.login!)
       } else {
-        notification.custom.error(response.data.err);
+        notification.custom.error(response.data.err)
       }
-    });
+    })
   }
+
   useEffect(() => {
-    getUser();
-  }, []);
+    getUser()
+  }, [])
+
   return (
     <>
       <div className="flex">
@@ -63,7 +42,7 @@ function UserComments({ userID, rate, comment }: UserComments_Props) {
       </div>
       <Divider />
     </>
-  );
+  )
 }
 
 function Comments({ comments, id }: Comments_Props) {
@@ -76,67 +55,75 @@ function Comments({ comments, id }: Comments_Props) {
       ))}
       <div className="mt-3" style={{ height: 1, width: 1 }} />
     </div>
-  );
+  )
 }
 
-export default function InstitutionCard({
-  userID, id, name, address, status, description, link, imagePath, city,
-}: InstitutionCard_Props) {
-  // States
-  const [openRateDialog, setRateDialogOpen] = useState<boolean>(false);
-  const [showRate, setShowRate] = useState<string>('');
-  const [showRateColor, setShowRateColor] = useState<string>('');
-  const [comments, setComments] = useState<Comment_Props[]>([]);
-  const [loadingRate, setLoadingRate] = useState<boolean>(false);
-  const [rate, setRate] = useState<number>(5);
-  const [commentContent, setCommentContent] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
-  const [rerender, setRerender] = useState<number>(1);
-  const [showComments, setShowComments] = useState<boolean>(false);
-  const { t } = useTranslation();
+export default function InstitutionCard({ userID, id, name, address, status, description, link, imagePath, city, }: InstitutionCard_Props) {
 
-  const [classesShowComments, classesSetShowComments] = useState<string>('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn');
-  const [classesBottomSheet, classesSetBottomSheet] = useState<string>('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp');
+  // Setups
+  const style = { display: 'none', zIndex: 500, backgroundColor: 'rgb(0,0,0,0.5)' }
+
+  // States
+  const [openRateDialog, setRateDialogOpen] = useState<boolean>(false)
+  const [showRate, setShowRate] = useState<string>('')
+  const [showRateColor, setShowRateColor] = useState<string>('')
+  const [comments, setComments] = useState<Comment_Props[]>([])
+  const [loadingRate, setLoadingRate] = useState<boolean>(false)
+  const [rate, setRate] = useState<number>(5)
+  const [commentContent, setCommentContent] = useState<string>('')
+  const [error, setError] = useState<boolean>(false)
+  const [rerender, setRerender] = useState<number>(1)
+  const [showComments, setShowComments] = useState<boolean>(false)
+  const { t } = useTranslation()
+  const [classesShowComments, classesSetShowComments] = useState<string>('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn')
+  const [classesBottomSheet, classesSetBottomSheet] = useState<string>('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp')
 
   // Handlers
   const handleRateChange = (event: Event) => {
-    const element = event.target as HTMLInputElement;
-    setRate(parseInt(element.value, 10));
-  };
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCommentContent(event.target.value);
-  };
-
-  // Checking if userID exist
-  if (userID == null) {
-    localStorage.removeItem('token');
-    location.reload();
+    const element = event.target as HTMLInputElement
+    setRate(parseInt(element.value, 10))
   }
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentContent(event.target.value)
+  }
+
+  if (showComments) {
+    style.display = 'block'
+  } else {
+    style.display = 'none'
+  }
+
+  if (userID == null) {
+    localStorage.removeItem('token')
+    location.reload()
+  }
+
+  // Functions
   function ReRender() {
-    setRerender(rerender + 1);
+    setRerender(rerender + 1)
   }
 
   function addRate() {
-    setLoadingRate(true);
+    setLoadingRate(true)
     if (commentContent != '') {
       axios.post(`${API.baseURL}/comments/add`, {
         userID,
         institutionID: id,
         content: commentContent,
         rate,
-      }).then((response) => {
+      }).then((response: AxiosResponse) => {
         if (!response.data.err) {
-          setRateDialogOpen(false);
-          setLoadingRate(false);
-          notification.custom.success(t('main.institution_card.rate_dialog.rate_successfully_added'));
-          ReRender();
+          setRateDialogOpen(false)
+          setLoadingRate(false)
+          notification.custom.success(t('main.institution_card.rate_dialog.rate_successfully_added'))
+          ReRender()
         } else {
-          notification.custom.error(response.data.err);
+          notification.custom.error(response.data.err)
         }
-      });
+      })
     } else {
-      setError(true);
-      setLoadingRate(false);
+      setError(true)
+      setLoadingRate(false)
     }
   }
 
@@ -145,82 +132,77 @@ export default function InstitutionCard({
       query: {
         institutionID: id,
       },
-    }).then((response) => {
+    }).then((response: AxiosResponse) => {
       if (!response.data.err) {
-        const data = response.data;
-        setComments(data);
-        let sumRate = 0;
-        let n = 0;
+        const data = response.data
+        setComments(data)
+        let sumRate = 0
+        let n = 0
         for (let i = 0; i < data.length; i += 1) {
-          const rate1 = data[i].rate;
-          sumRate += parseInt(rate1, 10);
-          n += 1;
+          const rate1 = data[i].rate
+          sumRate += parseInt(rate1, 10)
+          n += 1
         }
-        let average = (Math.ceil((sumRate / n) * 10)) / 10;
+        let average = (Math.ceil((sumRate / n) * 10)) / 10
         if (average < 0 || average === 0) {
-          average = 5;
+          average = 5
         }
         if (average >= 8) {
-          setShowRate(average.toString());
-          setShowRateColor(green[800]);
+          setShowRate(average.toString())
+          setShowRateColor(green[800])
         } else if (average >= 6) {
-          setShowRate(average.toString());
-          setShowRateColor(green[400]);
+          setShowRate(average.toString())
+          setShowRateColor(green[400])
         } else if (average >= 4) {
-          setShowRate(average.toString());
-          setShowRateColor(yellow[800]);
+          setShowRate(average.toString())
+          setShowRateColor(yellow[800])
         } else if (average >= 2) {
-          setShowRate(average.toString());
-          setShowRateColor(red[300]);
+          setShowRate(average.toString())
+          setShowRateColor(red[300])
         } else if (average >= 0) {
-          setShowRate(average.toString());
-          setShowRateColor(red[800]);
+          setShowRate(average.toString())
+          setShowRateColor(red[800])
         } else {
-          setShowRate('X');
-          setShowRateColor(grey[50]);
+          setShowRate('X')
+          setShowRateColor(grey[50])
         }
       } else {
-        notification.custom.error(response.data.err);
+        notification.custom.error(response.data.err)
       }
-    });
+    })
   }
 
   function handleCommentsClose() {
     setTimeout(() => {
-      setShowComments(false);
-      classesSetShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn');
-      classesSetBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp');
-    }, 1000);
-    classesSetShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeOut');
-    classesSetBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideOutDown');
+      setShowComments(false)
+      classesSetShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeIn')
+      classesSetBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideInUp')
+    }, 1000)
+    classesSetShowComments('fixed top-0 bottom-0 left-0 right-0 border-none animate__animated animate__fadeOut')
+    classesSetBottomSheet('relative flex flex-col items-center h-full w-full animate__animated animate__slideOutDown')
   }
 
   // Marks for slider
   const marks: Array<{ value: number, label: JSX.Element }> = [
     {
       value: 0,
-      label: <DangerousIcon sx={{ color: red[500] }} />,
+      label: <Dangerous sx={{ color: red[500] }} />,
     },
     {
       value: 5,
-      label: <WarningAmberIcon sx={{ color: yellow[400] }} />,
+      label: <WarningAmber sx={{ color: yellow[400] }} />,
     },
     {
       value: 10,
-      label: <Diversity1Icon sx={{ color: green[300] }} />,
+      label: <Diversity1 sx={{ color: green[300] }} />,
     },
-  ];
+  ]
 
   useEffect(() => {
-    getComments();
-  }, [rerender]);
+    getComments()
+  }, [rerender])
 
-  const style = { display: 'none', zIndex: 500, backgroundColor: 'rgb(0,0,0,0.5)' };
-  if (showComments) {
-    style.display = 'block';
-  } else {
-    style.display = 'none';
-  }
+
 
   return (
     <>
@@ -260,9 +242,9 @@ export default function InstitutionCard({
               sx={{
                 borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px', marginRight: 1, border: 1,
               }}
-              onClick={() => { setRateDialogOpen(true); }}
+              onClick={() => { setRateDialogOpen(true) }}
             >
-              <StarOutlinedIcon />
+              <StarOutlined />
               {' '}
               <p className="text-sm ml-2 mr-2">{t('main.institution_card.rate_button')}</p>
             </IconButton>
@@ -270,16 +252,16 @@ export default function InstitutionCard({
               sx={{
                 borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px', border: 1,
               }}
-              onClick={() => { window.open(link, '_blank'); }}
+              onClick={() => { window.open(link, '_blank') }}
             >
-              <InsertLinkOutlinedIcon />
+              <InsertLinkOutlined />
               {' '}
               <p className="text-sm ml-2 mr-2">{t('main.institution_card.link_button')}</p>
             </IconButton>
           </div>
           <div>
-            <IconButton onClick={() => { setShowComments(true); }}>
-              <CommentOutlinedIcon />
+            <IconButton onClick={() => { setShowComments(true) }}>
+              <CommentOutlined />
             </IconButton>
           </div>
         </div>
@@ -296,7 +278,7 @@ export default function InstitutionCard({
             </div>
           </div>
         )}
-      <Dialog open={openRateDialog} onClose={() => { setRateDialogOpen(false); }} className="animate__animated animate__fadeIn">
+      <Dialog open={openRateDialog} onClose={() => { setRateDialogOpen(false) }} className="animate__animated animate__fadeIn">
         <DialogTitle>{t('main.institution_card.rate_dialog.title')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -306,13 +288,13 @@ export default function InstitutionCard({
           <DialogContentText sx={{ marginBottom: 1 }}>
             {t('main.institution_card.rate_dialog.content_text.1')}
           </DialogContentText>
-          <TextField error={error} variant="outlined" multiline fullWidth minRows={3} onChange={handleCommentChange} onClick={() => { setError(false); }} required />
+          <TextField error={error} variant="outlined" multiline fullWidth minRows={3} onChange={handleCommentChange} onClick={() => { setError(false) }} required />
         </DialogContent>
         <DialogActions sx={{ marginRight: 2, marginBottom: 2, bgColor: themeColor[2] }}>
           <LoadingButton
             variant="outlined"
             loading={loadingRate}
-            onClick={() => { setLoadingRate(true); addRate(); }}
+            onClick={() => { setLoadingRate(true); addRate() }}
             sx={{
               borderColor: themeColor[12], color: themeColor[7], borderRadius: 9999, fontWeight: 500, paddingLeft: '12px', paddingRight: '12px',
             }}
@@ -322,5 +304,5 @@ export default function InstitutionCard({
         </DialogActions>
       </Dialog>
     </>
-  );
+  )
 }
