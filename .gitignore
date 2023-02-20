@@ -10,3 +10,4 @@ node_modules/
 stats.html
 config.ts
 *.copy.ts
+dist/
